@@ -4,8 +4,11 @@ close all
 A = rand(100,100);
 B = rand(100,100);
 
-# Producto interno entre dos vectores
 
+%----------------------------FUNCIONES-----------------------------%
+
+# Producto interno entre dos vectores.
+# Utilizada solo por funcion productoMatrices.
 function resultado = productoInterno(vectorFila,vectorColumna)
   suma = 0;
   
@@ -17,41 +20,36 @@ function resultado = productoInterno(vectorFila,vectorColumna)
 endfunction
 
 # Multiplica matrices cuadradas
-
-function nuevaMatriz = productoMatrices(A,B)
+function matrizResultante = productoMatrices(A,B)
   matrizAuxiliar = [];
   
   # Hace producto de cada fila de A contra todas las columnas de B
-  # Y las guarda en la nueva matriz matrizAuxiliar
   for i=1:rows(A)
     for j=1:columns(A)
       matrizAuxiliar(i,j) = productoInterno(A(i,:),B(:,i));
     endfor
   endfor
   
-  nuevaMatriz = matrizAuxiliar;
+  matrizResultante = matrizAuxiliar;
 endfunction
 
 # Traspone matrices cuadradas
-
-function matrizTraspuesta = trasponer(matrizCuadrada)
-  auxMatrizTraspuesta = [];
+function matrizResultante = trasponer(matrizCuadrada)
+  matrizTraspuesta = [];
   
   # Toma cada fila y la escribe como columna en la nueva matriz
   for i=1:rows(matrizCuadrada)
     vectorFila = matrizCuadrada(i,:);
     
     for j=1:columns(matrizCuadrada)
-      auxMatrizTraspuesta(j,i) = vectorFila(j);
+      matrizTraspuesta(j,i) = vectorFila(j);
     endfor
-    
   endfor
   
-  matrizTraspuesta = auxMatrizTraspuesta;
+  matrizResultante = matrizTraspuesta;
 endfunction
 
 # Calcula traza de una matriz cuadrada
-
 function resultado = trazaMatriz(matrizCuadrada)
   suma = 0;
   
@@ -61,6 +59,54 @@ function resultado = trazaMatriz(matrizCuadrada)
   
   resultado = suma;
 endfunction
+
+# Devuelve una matriz con los coeficientes maximo y minimo junto con sus
+# respectivas posiciones en la matriz.
+#
+# La primera columna de la matriz contiene los coeficientes max y min.
+# La segunda columna de la matriz contiene las posiciones i del valor max y min.
+# La tercera columna de la matriz contiene las posiciones j del valor max y min.
+function vectorResultante = coeficientes(A)
+  maxMinVector = [];
+  
+  valorMaximo = A(1,1);
+  posicioniMaximo = 0;
+  posicionjMaximo = 0;
+  
+  valorMinimo = A(1,1);
+  posicioniMinimo = 1;
+  posicionjMinimo = 1;
+  
+  for i=1:rows(A)
+    for j=1:rows(A)
+      
+      if (A(i,j) > valorMaximo)
+        valorMaximo = A(i,j);
+        posicioniMaximo = i;
+        posicionjMaximo = j;
+      endif
+        
+      if (A(i,j) < valorMinimo)
+        valorMinimo = A(i,j);
+        posicioniMinimo = i;
+        posicionjMinimo = j;
+      endif
+        
+    endfor
+  endfor
+  
+  maxMinVector(1,1) = valorMaximo;
+  maxMinVector(1,2) = posicioniMaximo;
+  maxMinVector(1,3) = posicionjMaximo;
+  
+  maxMinVector(2,1) = valorMinimo;
+  maxMinVector(2,2) = posicioniMinimo;
+  maxMinVector(2,3) = posicionjMinimo;
+  
+  vectorResultante = maxMinVector;
+endfunction
+
+%------------------------------RESPUESTAS------------------------------%
 
 # a)
 AB = productoMatrices(A,B);
@@ -82,8 +128,44 @@ ABtraspuesta = productoMatrices(A,Btraspuesta);
 #disp(trasponer(AB));
 
 # d)
+disp('Traza de los resultados anteriores:');
+
+disp('Traza de AB');
 disp(trazaMatriz(AB));
+
+disp('Traza de BA');
 disp(trazaMatriz(BA));
+
+disp('Traza de (A^t)B');
 disp(trazaMatriz(AtraspuestaB));
+
+disp('Traza de A(B^t)');
 disp(trazaMatriz(ABtraspuesta));
+
+disp('Traza de (AB)^t');
 disp(trazaMatriz(trasponer(AB)));
+
+# e)
+disp('Coeficientes Maximos y Minimos de resultados anteriores:');
+
+disp('Coeficientes de AB:');
+mCoeficientes = coeficientes(AB);
+disp(mCoeficientes(:,1));
+
+disp('Coeficientes de BA:');
+mCoeficientes = coeficientes(BA);
+disp(mCoeficientes(:,1));
+
+disp('Coeficientes de (A^t)B:');
+mCoeficientes = coeficientes(AtraspuestaB);
+disp(mCoeficientes(:,1));
+
+disp('Coeficientes de A(B^t):');
+mCoeficientes = coeficientes(ABtraspuesta);
+disp(mCoeficientes(:,1));
+
+disp('Coeficientes de (AB)^t:');
+mCoeficientes = coeficientes(trasponer(AB));
+disp(mCoeficientes(:,1));
+
+disp('Fin del programa');
