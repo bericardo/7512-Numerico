@@ -6,14 +6,14 @@ B = rand(100,100);
 
 # Producto interno entre dos vectores
 
-function sumaTotal = productoInterno(vectorFila,vectorColumna)
+function resultado = productoInterno(vectorFila,vectorColumna)
   suma = 0;
   
   for i=1:columns(vectorFila)
     suma = suma + vectorFila(i)*vectorColumna(i);
   endfor
   
-  sumaTotal = suma;
+  resultado = suma;
 endfunction
 
 # Multiplica matrices cuadradas
@@ -37,6 +37,7 @@ endfunction
 function matrizTraspuesta = trasponer(matrizCuadrada)
   auxMatrizTraspuesta = [];
   
+  # Toma cada fila y la escribe como columna en la nueva matriz
   for i=1:rows(matrizCuadrada)
     vectorFila = matrizCuadrada(i,:);
     
@@ -48,6 +49,8 @@ function matrizTraspuesta = trasponer(matrizCuadrada)
   
   matrizTraspuesta = auxMatrizTraspuesta;
 endfunction
+
+# Calcula traza de una matriz cuadrada
 
 function resultado = trazaMatriz(matrizCuadrada)
   suma = 0;
