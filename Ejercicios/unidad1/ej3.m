@@ -1,7 +1,7 @@
 close all
 clear all
 
-N = 500; # Dimension del vector
+N = 500; % Dimension del vector
 
 function escalarResultado = productoInterno(a,b)
   suma = 0;
@@ -23,11 +23,11 @@ function distanciaResultado = distancia(a,b)
   distanciaResultado = sqrt(suma);
 endfunction
 
-# Creo vectores de Nx1 con valores aleatorios
+% Creo vectores de Nx1 con valores aleatorios
 a = rand(N,1);
 b = rand(N,1);
 
-b = b.**2; # Eleva todos los elementos del vector b al cuadrado
+b = b.**2; % Eleva todos los elementos del vector b al cuadrado
 
 disp(productoInterno(a,b))
 disp(norm(b-a,2))

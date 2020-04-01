@@ -1,4 +1,4 @@
-# Sumatoria desde i=1 hasta N=1000 con n=impar
+% Sumatoria desde i=1 hasta N=1000 con n=impar
 clear all
 close all
 

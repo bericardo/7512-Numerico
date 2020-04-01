@@ -1,4 +1,4 @@
-# Sumatoria desde i=1 hasta N=1000 con n=par
+% Sumatoria desde i=1 hasta N=1000 con n=par
 clear all
 close all
 

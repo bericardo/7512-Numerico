@@ -7,8 +7,8 @@ B = rand(100,100);
 
 %----------------------------FUNCIONES-----------------------------%
 
-# Producto interno entre dos vectores.
-# Utilizada solo por funcion productoMatrices.
+% Producto interno entre dos vectores.
+% Utilizada solo por funcion productoMatrices.
 function resultado = productoInterno(vectorFila,vectorColumna)
   suma = 0;
   
@@ -19,11 +19,11 @@ function resultado = productoInterno(vectorFila,vectorColumna)
   resultado = suma;
 endfunction
 
-# Multiplica matrices cuadradas
+% Multiplica matrices cuadradas
 function matrizResultante = productoMatrices(A,B)
   matrizAuxiliar = [];
   
-  # Hace producto de cada fila de A contra todas las columnas de B
+  % Hace producto de cada fila de A contra todas las columnas de B
   for i=1:rows(A)
     for j=1:columns(A)
       matrizAuxiliar(i,j) = productoInterno(A(i,:),B(:,i));
@@ -33,11 +33,11 @@ function matrizResultante = productoMatrices(A,B)
   matrizResultante = matrizAuxiliar;
 endfunction
 
-# Traspone matrices cuadradas
+% Traspone matrices cuadradas
 function matrizResultante = trasponer(matrizCuadrada)
   matrizTraspuesta = [];
   
-  # Toma cada fila y la escribe como columna en la nueva matriz
+  % Toma cada fila y la escribe como columna en la nueva matriz
   for i=1:rows(matrizCuadrada)
     vectorFila = matrizCuadrada(i,:);
     
@@ -49,7 +49,7 @@ function matrizResultante = trasponer(matrizCuadrada)
   matrizResultante = matrizTraspuesta;
 endfunction
 
-# Calcula traza de una matriz cuadrada
+% Calcula traza de una matriz cuadrada
 function resultado = trazaMatriz(matrizCuadrada)
   suma = 0;
   
@@ -60,12 +60,12 @@ function resultado = trazaMatriz(matrizCuadrada)
   resultado = suma;
 endfunction
 
-# Devuelve una matriz con los coeficientes maximo y minimo junto con sus
-# respectivas posiciones en la matriz.
-#
-# La primera columna de la matriz contiene los coeficientes max y min.
-# La segunda columna de la matriz contiene las posiciones i del valor max y min.
-# La tercera columna de la matriz contiene las posiciones j del valor max y min.
+% Devuelve una matriz con los coeficientes maximo y minimo junto con sus
+% respectivas posiciones en la matriz.
+%
+% La primera columna de la matriz contiene los coeficientes max y min.
+% La segunda columna de la matriz contiene las posiciones i del valor max y min.
+% La tercera columna de la matriz contiene las posiciones j del valor max y min.
 function vectorResultante = coeficientes(A)
   maxMinVector = [];
   
@@ -106,17 +106,17 @@ function vectorResultante = coeficientes(A)
   vectorResultante = maxMinVector;
 endfunction
 
-%------------------------------RESPUESTAS------------------------------%
+%------------------------------RESPUESTAS--------------------------------------%
 
-# a)
+% a)
 AB = productoMatrices(A,B);
 disp(AB);
 
-# b)
+% b)
 BA = productoMatrices(B,A);
 disp(BA);
 
-# c)
+% c)
 Atraspuesta = trasponer(A);
 Btraspuesta = trasponer(B);
 
@@ -127,7 +127,7 @@ disp(AtraspuestaB);
 disp(ABtraspuesta);
 disp(trasponer(AB));
 
-# d)
+% d)
 disp('Traza de los resultados anteriores:');
 disp('----')
 
@@ -146,7 +146,7 @@ disp(trazaMatriz(ABtraspuesta));
 disp('Traza de (AB)^t:');
 disp(trazaMatriz(trasponer(AB)));
 
-# e y f)
+% e y f)
 disp('Coeficientes Maximos y Minimos de resultados anteriores junto a sus posiciones:');
 disp('El formato es el siguiente: coeficiente | posicion i | posicion j');
 disp('----')

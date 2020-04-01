@@ -1,4 +1,4 @@
-# Sumatoria desde n=1 hasta N=10000 siendo s=( (-1)^(n) )*(1/(n^2))
+% Sumatoria desde n=1 hasta N=10000 siendo s=( (-1)^(n) )*(1/(n^2))
 close all
 clear all
 

@@ -1,4 +1,4 @@
-# Sumatoria desde n=1 hasta N=10000 siendo s=1/n
+% Sumatoria desde n=1 hasta N=10000 siendo s=1/n
 close all
 clear all
 
