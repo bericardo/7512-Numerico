@@ -110,11 +110,11 @@ endfunction
 
 # a)
 AB = productoMatrices(A,B);
-#disp(AB);
+disp(AB);
 
 # b)
 BA = productoMatrices(B,A);
-#disp(BA);
+disp(BA);
 
 # c)
 Atraspuesta = trasponer(A);
@@ -123,49 +123,52 @@ Btraspuesta = trasponer(B);
 AtraspuestaB = productoMatrices(Atraspuesta,B);
 ABtraspuesta = productoMatrices(A,Btraspuesta);
 
-#disp(AtraspuestaB);
-#disp(ABtraspuesta);
-#disp(trasponer(AB));
+disp(AtraspuestaB);
+disp(ABtraspuesta);
+disp(trasponer(AB));
 
 # d)
 disp('Traza de los resultados anteriores:');
+disp('----')
 
-disp('Traza de AB');
+disp('Traza de AB:');
 disp(trazaMatriz(AB));
 
-disp('Traza de BA');
+disp('Traza de BA:');
 disp(trazaMatriz(BA));
 
-disp('Traza de (A^t)B');
+disp('Traza de (A^t)B:');
 disp(trazaMatriz(AtraspuestaB));
 
-disp('Traza de A(B^t)');
+disp('Traza de A(B^t):');
 disp(trazaMatriz(ABtraspuesta));
 
-disp('Traza de (AB)^t');
+disp('Traza de (AB)^t:');
 disp(trazaMatriz(trasponer(AB)));
 
-# e)
-disp('Coeficientes Maximos y Minimos de resultados anteriores:');
+# e y f)
+disp('Coeficientes Maximos y Minimos de resultados anteriores junto a sus posiciones:');
+disp('El formato es el siguiente: coeficiente | posicion i | posicion j');
+disp('----')
 
 disp('Coeficientes de AB:');
 mCoeficientes = coeficientes(AB);
-disp(mCoeficientes(:,1));
+disp(mCoeficientes);
 
 disp('Coeficientes de BA:');
 mCoeficientes = coeficientes(BA);
-disp(mCoeficientes(:,1));
+disp(mCoeficientes);
 
 disp('Coeficientes de (A^t)B:');
 mCoeficientes = coeficientes(AtraspuestaB);
-disp(mCoeficientes(:,1));
+disp(mCoeficientes);
 
 disp('Coeficientes de A(B^t):');
 mCoeficientes = coeficientes(ABtraspuesta);
-disp(mCoeficientes(:,1));
+disp(mCoeficientes);
 
 disp('Coeficientes de (AB)^t:');
 mCoeficientes = coeficientes(trasponer(AB));
-disp(mCoeficientes(:,1));
+disp(mCoeficientes);
 
 disp('Fin del programa');
