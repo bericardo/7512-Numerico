@@ -1,0 +1,194 @@
+%------------------------------PORTADA---------------------------------%
+
+\documentclass[a4paper,12pt]{article}
+\usepackage{latexsym}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenx}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Nombre y Apellido Alumno}
+\lhead{Nombre del Trabajo Practico}
+\cfoot{Página \thepage}
+
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=black,  %choose some color if you want links to stand out
+}
+
+\title{
+	\vspace{-3cm}
+		{\small Facultad de Ingeniería $\vert$ Universidad de Buenos Aires} \\
+		{\small XX. Cuatrimestre 20XX} \\
+	\rule{400pt}{3pt}\\
+		{\Large \textbf{95.10 $\vert$ Modelación numérica} }\\ \vspace{-0.3cm}
+		{\large \textbf{75.12 $\vert$ Análisis numérico I A} }\\ \vspace{-0.3cm}
+		{\large \textbf{95.13 $\vert$ Métodos matemáticos y numéricos} }
+	\vspace{0.2cm}
+	\rule{400pt}{3pt}\\
+		{\Large \textbf{ Trabajo Práctico \#X} } \\ \vspace{0.5cm}
+		{\Large \textbf{Titulo del trabajo practico}}
+	\vspace{-2cm}
+	\date{}
+}
+
+
+\begin{document}
+\maketitle
+
+%---------------------------DATOS DEl ALUMNO---------------------------%
+
+\setlength{\arrayrulewidth}{0.5mm}
+\setlength{\tabcolsep}{31pt}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+	\hline
+	\multirow{2}{3em}{Grupo \centering{Nº}} & Nombre y Apellido Alumno1 & Padron \\ 
+	\cline{2 - 3}
+	
+	& Nombre y Apellido Alumno2 & Padron \\ 
+	\hline
+\end{tabular}
+\end{center}
+
+%--------------------------DATOS DEl DOCENTE---------------------------%
+
+\setlength{\arrayrulewidth}{0.5mm}
+\setlength{\tabcolsep}{27pt}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+	\hline
+	\textbf{Fecha} & \textbf{Correcciones/Observaciones} & \textbf{Docente} \\ 
+	\hline
+	& &  \\
+	
+	& &  \\
+	
+	& &  \\
+	
+	& &  \\
+	
+	& &  \\
+	
+	& &  \\
+	
+	& &  \\
+	
+	& &  \\
+	\hline
+\end{tabular}
+\end{center}
+
+%--------------------------NOTA FINAL DEL TP---------------------------%
+
+\setlength{\tabcolsep}{37.5pt}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+	\hline
+	\textbf{Calificacion Final} & \textbf{Docente} & \textbf{Fecha} \\ 
+	\hline
+	
+	& &  \\
+	
+	& &  \\
+	
+	\hline
+\end{tabular}
+\end{center}
+
+%---------------------------FIN DE LA PORTADA--------------------------%
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Introducción}
+\paragraph{Introducción del problema a resolver.}
+\paragraph{Comentarios relativos al enunciado.}
+\paragraph{La realización de un TP apunta a que el alumno logre 
+identificar el problema, buscar técnicas de resolución del mismo, 
+traducirlas en un código de programación confiable y utilizar éste último 
+para extraer resultados de interés. Los resultados deben ser analizados 
+y presentados de forma tal que el lector del informe pueda obtener las 
+conclusiones importantes en forma rápida y sencilla. En este sentido, 
+resulta instructivo que  el alumno haga un paralelo entre el informe de 
+un TP y un informe de estilo profesional.Resulta una buena práctica 
+ilustrar cuestiones que se plantean en la Introducción.}
+
+\section{Metodología}
+
+\paragraph{Métodos a utilizar. Descripción y esquemas numéricos utilizados. Incorporar una descripción gráfica puede ser útil.}
+\paragraph{Descripción de la codificación.}
+
+\section{Resolución}
+
+\paragraph{Informar el desarrollo del trabajo. En esta sección se deberá respetar el orden y numeración de los ítems requeridos en el enunciado. En el caso de no hacerlo se debería ser muy específico con la descripción de las tareas realizadas.}
+\paragraph{Incorporar tablas y gráficos. }
+\paragraph{Las tablas deben tener una longitud acotada.}
+\paragraph{Se deberá ser preciso en la definición de los gráficos. Algunas sugerencias: detallar información de ordenadas y abscisas, incorporar leyenda, tener en cuenta la cantidad de dígitos representativos de los ejes, utilizar todo tipo de líneas y puntos, evaluar incorporar título, manejar tamaños y resolución, exportar a imagen para luego ser importados al texto, etc.}
+\paragraph{En el Anexo se presenta un código ejemplo para realizar gráficos.}
+\paragraph{Ejemplo de gráfico:}
+
+\section{Conclusiones}
+
+\paragraph{Resaltar los aspectos más relevantes de la ejecución del trabajo práctico.}
+\paragraph{Concluir acerca de los resultados y los métodos numéricos utilizados.}
+
+\section{Referencias}
+
+\paragraph{Skiba, Y., 2005. Métodos y Esquemas Numéricos: Un Análisis Computacional. 1ra. edición. Dirección General de Publicaciones y Fomento Editorial, Universidad Nacional Autónoma de México, México, 440 pp. ISBN: 970-32-2023-1}
+
+\section{Anexo:Codigos}
+
+\paragraph{Incorporar los códigos en el ANEXO y explicitar su utilización.}
+\subsection{Código de graficación}
+\begin{verbatim}
+% Rango de cálculo de la variable x
+x = -10:0.1:10;
+
+% Lista de elementos a grafica
+legend_list = {"sin (x)","cos (x)"};  # cell array
+
+% Graficador
+plot (x, sin (x),'r');
+hold on;
+plot (x, cos (x),'b');
+legend (legend_list);
+hold off;
+
+% Título
+title ("Ploteos - Ejemplos - FIUBA - 95.10");
+
+% Rótulos de ejes
+xlabel('x - letra 10','fontsize',10)
+ylabel('y - letra 14','fontsize',14) 
+
+% Texto incrustado
+text (1.0, 0.75, "Texto ubicado en x=1.0 e y=0.75");
+text (-5.0, -0.75, "Texto ubicado en x=-5.0 e y=-0.75");
+
+% Rangos (x_inf x_sup y_inf Y_sup)
+axis ([-15 15 -1.5 1.5])
+
+% Grilla
+grid
+
+% Tamaño de letra de los n
+set(gca,'fontsize',20); % sets font of numbers on axes 
+
+% Exporta el gráfico a un archivo en formato jpg
+print -djpg archivo_01.jpg 
+\end{verbatim}
+
+\end{document}
