@@ -11,9 +11,12 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{Nombre y Apellido Alumno}
-\lhead{Nombre del Trabajo Practico}
-\cfoot{Página \thepage}
+\rhead{Nombre del trabajo practico}
+\lfoot{\textit{Nombre y Apellido Alumno}}
+\rfoot{\textit{Página \thepage}}
+
+\renewcommand{\headrulewidth}{0.4pt} %<- ADDED
+\renewcommand{\footrulewidth}{0.4pt} %<- ADDED
 
 \hypersetup{
     colorlinks=true, %set true if you want colored links
@@ -24,7 +27,7 @@
 \title{
 	\vspace{-3cm}
 		{\small Facultad de Ingeniería $\vert$ Universidad de Buenos Aires} \\
-		{\small XX. Cuatrimestre 20XX} \\
+		{\small XX Cuatrimestre 20XX} \\
 	\rule{400pt}{3pt}\\
 		{\Large \textbf{95.10 $\vert$ Modelación numérica} }\\ \vspace{-0.3cm}
 		{\large \textbf{75.12 $\vert$ Análisis numérico I A} }\\ \vspace{-0.3cm}
@@ -32,7 +35,7 @@
 	\vspace{0.2cm}
 	\rule{400pt}{3pt}\\
 		{\Large \textbf{ Trabajo Práctico \#X} } \\ \vspace{0.5cm}
-		{\Large \textbf{Titulo del trabajo practico}}
+		{\Large \textbf{Nombre del trabajo practico}}
 	\vspace{-2cm}
 	\date{}
 }
@@ -46,11 +49,12 @@
 \setlength{\arrayrulewidth}{0.5mm}
 \setlength{\tabcolsep}{31pt}
 \renewcommand{\arraystretch}{1.5}
+\thispagestyle{empty} % Borra numero de pagina de la portada
 
 \begin{center}
 \begin{tabular}{ |c|c|c| } 
 	\hline
-	\multirow{2}{3em}{Grupo \centering{Nº}} & Nombre y Apellido Alumno1 & Padron \\ 
+	\multirow{2}{3.2em}{Grupo \centering{Nº}} & Nombre y Apellido Alumno1 & Padron \\ 
 	\cline{2 - 3}
 	
 	& Nombre y Apellido Alumno2 & Padron \\ 
@@ -91,12 +95,12 @@
 %--------------------------NOTA FINAL DEL TP---------------------------%
 
 \setlength{\tabcolsep}{37.5pt}
-\renewcommand{\arraystretch}{1.5}
+\renewcommand{\arraystretch}{1.8}
 
 \begin{center}
 \begin{tabular}{ |c|c|c| } 
 	\hline
-	\textbf{Calificacion Final} & \textbf{Docente} & \textbf{Fecha} \\ 
+	\textbf{Calificación Final} & \textbf{Docente} & \textbf{Fecha} \\ 
 	\hline
 	
 	& &  \\
@@ -114,9 +118,9 @@
 
 \newpage
 \section{Introducción}
-\paragraph{Introducción del problema a resolver.}
-\paragraph{Comentarios relativos al enunciado.}
-\paragraph{La realización de un TP apunta a que el alumno logre 
+\paragraph{\normalfont Introducción del problema a resolver.}
+\paragraph{\normalfont Comentarios relativos al enunciado.}
+\paragraph{\normalfont La realización de un TP apunta a que el alumno logre 
 identificar el problema, buscar técnicas de resolución del mismo, 
 traducirlas en un código de programación confiable y utilizar éste último 
 para extraer resultados de interés. Los resultados deben ser analizados 
@@ -128,30 +132,31 @@ ilustrar cuestiones que se plantean en la Introducción.}
 
 \section{Metodología}
 
-\paragraph{Métodos a utilizar. Descripción y esquemas numéricos utilizados. Incorporar una descripción gráfica puede ser útil.}
-\paragraph{Descripción de la codificación.}
+\paragraph{\normalfont Métodos a utilizar. Descripción y esquemas numéricos utilizados. Incorporar una descripción gráfica puede ser útil.}
+\paragraph{\normalfont Descripción de la codificación.}
 
 \section{Resolución}
 
-\paragraph{Informar el desarrollo del trabajo. En esta sección se deberá respetar el orden y numeración de los ítems requeridos en el enunciado. En el caso de no hacerlo se debería ser muy específico con la descripción de las tareas realizadas.}
-\paragraph{Incorporar tablas y gráficos. }
-\paragraph{Las tablas deben tener una longitud acotada.}
-\paragraph{Se deberá ser preciso en la definición de los gráficos. Algunas sugerencias: detallar información de ordenadas y abscisas, incorporar leyenda, tener en cuenta la cantidad de dígitos representativos de los ejes, utilizar todo tipo de líneas y puntos, evaluar incorporar título, manejar tamaños y resolución, exportar a imagen para luego ser importados al texto, etc.}
-\paragraph{En el Anexo se presenta un código ejemplo para realizar gráficos.}
-\paragraph{Ejemplo de gráfico:}
+\paragraph{\normalfont Informar el desarrollo del trabajo. En esta sección se deberá respetar el orden y numeración de los ítems requeridos en el enunciado. En el caso de no hacerlo se debería ser muy específico con la descripción de las tareas realizadas.}
+\paragraph{\normalfont Incorporar tablas y gráficos. }
+\paragraph{\normalfont Las tablas deben tener una longitud acotada.}
+\paragraph{\normalfont Se deberá ser preciso en la definición de los gráficos. Algunas sugerencias: detallar información de ordenadas y abscisas, incorporar leyenda, tener en cuenta la cantidad de dígitos representativos de los ejes, utilizar todo tipo de líneas y puntos, evaluar incorporar título, manejar tamaños y resolución, exportar a imagen para luego ser importados al texto, etc.}
+\paragraph{\normalfont En el Anexo se presenta un código ejemplo para realizar gráficos.}
+\paragraph{\normalfont Ejemplo de gráfico:}
 
 \section{Conclusiones}
 
-\paragraph{Resaltar los aspectos más relevantes de la ejecución del trabajo práctico.}
-\paragraph{Concluir acerca de los resultados y los métodos numéricos utilizados.}
+\paragraph{\normalfont Resaltar los aspectos más relevantes de la ejecución del trabajo práctico.}
+\paragraph{\normalfont Concluir acerca de los resultados y los métodos numéricos utilizados.}
 
 \section{Referencias}
 
-\paragraph{Skiba, Y., 2005. Métodos y Esquemas Numéricos: Un Análisis Computacional. 1ra. edición. Dirección General de Publicaciones y Fomento Editorial, Universidad Nacional Autónoma de México, México, 440 pp. ISBN: 970-32-2023-1}
+\paragraph{\normalfont Skiba, Y., 2005. Métodos y Esquemas Numéricos: Un Análisis Computacional. 1ra. edición. Dirección General de Publicaciones y Fomento Editorial, Universidad Nacional Autónoma de México, México, 440 pp. ISBN: 970-32-2023-1}
 
-\section{Anexo:Codigos}
+\section{Anexo:Códigos}
 
-\paragraph{Incorporar los códigos en el ANEXO y explicitar su utilización.}
+\paragraph{\normalfont Incorporar los códigos en el ANEXO y explicitar su utilización.}
+
 \subsection{Código de graficación}
 \begin{verbatim}
 % Rango de cálculo de la variable x
