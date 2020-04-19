@@ -18,11 +18,9 @@ function resultado = graficar(vector1, vector2, titulo, sonFechas)
   legend_list = {"Nivel Hidrometrico"};
 
   % Graficador
-  plot(vector1, vector2);
+  plot(vector1, vector2,'-s');
   
-  if(sonFechas == 1)
-    datetick(gca);
-  endif
+  datetick(gca);
   
   legend(legend_list);
 
@@ -73,6 +71,7 @@ function resultado = minimos_anuales(datos)
     dia = datos(i,1);
     minimo_anual = datos(i,4);
 
+    % Busco el minimo del año
     while i <= dimension && datos(i,3) == anio
       if(datos(i,4) < minimo_anual)
         dia = datos(i,1);
@@ -123,6 +122,39 @@ function resultado = minimos_mensuales(datos)
     j = j + 1;
   endwhile
   resultado = matrizMinimosMensuales;
+endfunction
+
+% Devuelve la posicion del minimo absoluto
+function resultado = minimo_absoluto(datos)
+  min = datos(1,4);
+  pos = 1;
+  
+  for i=1:rows(datos)
+    if datos(i,4) < min
+      min = datos(i,4);
+      pos = i;
+    endif
+  endfor
+  
+  resultado = pos;
+endfunction
+
+% Devuelve matriz con el rango del periodo especificado
+function resultado = recortar_periodo(datos,desdeAnio,hastaAnio)
+  nuevosDatos = [];
+  j = 1;
+  
+  for i=1:rows(datos)
+    if (datos(i,3) >= desdeAnio) && (datos(i,3) <= hastaAnio)
+      nuevosDatos(j,1) = datos(i,1);
+      nuevosDatos(j,2) = datos(i,2);
+      nuevosDatos(j,3) = datos(i,3);
+      nuevosDatos(j,4) = datos(i,4);
+      j = j + 1;
+    endif
+  endfor
+  
+  resultado = nuevosDatos;
 endfunction
 
 %-------------------------------FIN DE FUNCIONES-------------------------------%
