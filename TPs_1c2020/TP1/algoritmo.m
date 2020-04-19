@@ -157,6 +157,24 @@ function resultado = recortar_periodo(datos,desdeAnio,hastaAnio)
   resultado = nuevosDatos;
 endfunction
 
+% Ordena la matriz por niveles hidrometricos de menor a mayor
+function s = bubblesort(v)
+  itemCount = length(v);
+  do
+    hasChanged = false;
+    itemCount--;
+    for i = 1:itemCount
+      if ( v(i,4) > v(i+1,4) )
+        aux = v(i,:);
+        v(i,:) = v(i+1,:);
+        v(i+1,:) = aux;
+        hasChanged = true;
+      endif
+     endfor
+  until(hasChanged == false)
+  s = v;
+endfunction
+
 %-------------------------------FIN DE FUNCIONES-------------------------------%
 
 % Punto a del ejercicio
@@ -169,6 +187,10 @@ endfunction
 %graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUBA - 75.12", true);
 
 % Punto c del ejercicio
-%matrizMinimosMensuales = minimos_mensuales(datos);
+matrizMinimosMensuales = minimos_mensuales(datos);
 %vectorFechas = convertirFechas(matrizMinimosMensuales);
 %graficar(vectorFechas,matrizMinimosMensuales(:,4),"Serie de Minimos Mensuales - FIUBA - 75.12", true);
+
+nuevoPeriodo = recortar_periodo(matrizMinimosMensuales, 1975,2020);
+s = bubblesort(nuevoPeriodo);
+s(:,3)
