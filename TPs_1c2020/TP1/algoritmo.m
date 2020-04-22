@@ -6,38 +6,6 @@ datos = load('Corrientes_1960-2020.dat');
 
 %-------------------------------FUNCIONES--------------------------------------%
 
-% vector1: es un vector de una columna
-% vector2: es un vector de una columna
-% y_label: es la etiqueta que corresponde al eje Y al plotear
-% x_label: es la etiqueta que corresponde al eje X al plotear
-% sonFechas: es un booleano que seteamos a true si vector1 es un vector de fechas
-%
-% Hace un grafico. En este caso, vector2 siempre tiene los niveles hidrometricos
-function resultado = graficar(vector1, vector2, titulo, sonFechas)
-  % Lista de elementos a graficar
-  legend_list = {"Nivel Hidrometrico"};
-
-  % Graficador
-  plot(vector1, vector2,'-s');
-  
-  datetick(gca);
-  
-  legend(legend_list);
-
-  % Título
-  title(titulo);
-
-  % Rótulos de ejes
-  xlabel("Fecha",'fontsize',10)
-  ylabel("Nivel Hidrometrico",'fontsize',14)
-
-  % Grilla
-  grid
-
-  % Tamaño de letra de los n
-  set(gca,'fontsize',20); % sets font of numbers on axes 
-endfunction
-
 % datos: matriz con los datos tal cual los cargamos desde el inicio del programa
 %
 % Devuelve un vector con las fechas transformadas de manera que pueda ser ploteada
@@ -51,7 +19,6 @@ function resultado = convertirFechas(datos)
     
     vectorFechas(i,1) = datenum(anio,mes,dia);
   endfor
-
   resultado = vectorFechas;
 endfunction
 
@@ -92,6 +59,39 @@ function resultado = minimos_anuales(datos)
   resultado = matrizMinimosAnuales;
 endfunction
 
+% vector1: es un vector de una columna
+% vector2: es un vector de una columna
+% y_label: es la etiqueta que corresponde al eje Y al plotear
+% x_label: es la etiqueta que corresponde al eje X al plotear
+% sonFechas: es un booleano que seteamos a true si vector1 es un vector de fechas
+%
+% Hace un grafico. En este caso, vector2 siempre tiene los niveles hidrometricos
+function resultado = graficar(vector1, vector2, titulo)
+  
+  % Lista de elementos a graficar
+  legend_list = {"Nivel Hidrometrico"};
+  
+  % Graficador
+  plot(vector1, vector2, '-');
+  
+  datetick(gca);
+  
+  legend(legend_list);
+
+  % Título
+  title(titulo);
+
+  % Rótulos de ejes
+  xlabel("Fecha",'fontsize',10)
+  ylabel("Nivel Hidrometrico",'fontsize',14)
+  
+  % Grilla
+  grid
+
+  % Tamaño de letra de los n
+  set(gca,'fontsize',20); % sets font of numbers on axes 
+endfunction
+
 function resultado = minimos_mensuales(datos)
   matrizMinimosMensuales = [];
   dimension = rows(datos);
@@ -124,6 +124,36 @@ function resultado = minimos_mensuales(datos)
   resultado = matrizMinimosMensuales;
 endfunction
 
+# Devuelve el primer nivel hidrometrico del mes pasado por parametro que aparece
+function resultado = obtener_un_minimo_del_mes(datos,mes)
+  vector = [];
+  
+  for i=1:rows(datos)
+    if datos(i,2) == mes
+      vector = datos(i,:);
+      break
+    endif
+  endfor
+  
+  resultado = vector;
+endfunction
+
+function resultado = min_mes(datos)
+  matrizMinimosMensuales = [];
+  
+  for mes=1:12
+    vectorMinimo = obtener_un_minimo_del_mes(datos,mes); # obtiene primer nivel del mes que aparece
+    for i=1:rows(datos)
+      if datos(i,2) == mes && datos(i,4) < vectorMinimo(4);
+        vectorMinimo = datos(i,:);
+      endif
+    endfor
+    
+    matrizMinimosMensuales(mes,:) = vectorMinimo;
+  endfor
+  resultado = matrizMinimosMensuales;
+endfunction
+
 % Devuelve la posicion del minimo absoluto
 function resultado = minimo_absoluto(datos)
   min = datos(1,4);
@@ -146,10 +176,11 @@ function resultado = recortar_periodo(datos,desdeAnio,hastaAnio)
   
   for i=1:rows(datos)
     if (datos(i,3) >= desdeAnio) && (datos(i,3) <= hastaAnio)
-      nuevosDatos(j,1) = datos(i,1);
-      nuevosDatos(j,2) = datos(i,2);
-      nuevosDatos(j,3) = datos(i,3);
-      nuevosDatos(j,4) = datos(i,4);
+      nuevosDatos(j,:) = datos(i,:);
+      %nuevosDatos(j,1) = datos(i,1);
+      %nuevosDatos(j,2) = datos(i,2);
+      %nuevosDatos(j,3) = datos(i,3);
+      %nuevosDatos(j,4) = datos(i,4);
       j = j + 1;
     endif
   endfor
@@ -179,18 +210,25 @@ endfunction
 
 % Punto a del ejercicio
 %vectorFechas = convertirFechas(datos);
-%graficar(vectorFechas, datos(:,4), "Serie Completa - FIUBA - 75.12", true);
+%graficar(vectorFechas, datos(:,4), "Serie Completa - FIUBA - 75.12");
 
 % Punto b del ejercicio
 %matrizMinimosAnuales = minimos_anuales(datos);
 %vectorFechas = convertirFechas(matrizMinimosAnuales);
-%graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUBA - 75.12", true);
+%graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUBA - 75.12");
 
 % Punto c del ejercicio
-matrizMinimosMensuales = minimos_mensuales(datos);
+%matrizMinimosMensuales = minimos_mensuales(datos);
 %vectorFechas = convertirFechas(matrizMinimosMensuales);
-%graficar(vectorFechas,matrizMinimosMensuales(:,4),"Serie de Minimos Mensuales - FIUBA - 75.12", true);
+%graficar(vectorFechas,matrizMinimosMensuales(:,4),"Serie de Minimos Mensuales - FIUBA - 75.12");
 
-nuevoPeriodo = recortar_periodo(matrizMinimosMensuales, 1975,2020);
-s = bubblesort(nuevoPeriodo);
-s(:,3)
+% Punto d del ejercicio
+matrizMinimosAnuales = minimos_anuales(datos);
+nuevoPeriodo = recortar_periodo(matrizMinimosAnuales, 1975,2020);
+
+% No se pide graficar, asi que esto no es necesario hacerlo.
+%vectorFechas = convertirFechas(nuevoPeriodo);
+%graficar(vectorFechas,nuevoPeriodo(:,4),"Serie 1975 - 2020 - FIUBA - 75.12");
+
+periodoOrdenado = bubblesort(nuevoPeriodo); # Ordena de menor a mayor por niveles hidrometricos
+dlmwrite('ranking_5_principales_bajantes.csv', periodoOrdenado); #Exportar datos como archivo .csv
