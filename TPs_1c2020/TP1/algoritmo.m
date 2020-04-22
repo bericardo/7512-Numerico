@@ -177,10 +177,6 @@ function resultado = recortar_periodo(datos,desdeAnio,hastaAnio)
   for i=1:rows(datos)
     if (datos(i,3) >= desdeAnio) && (datos(i,3) <= hastaAnio)
       nuevosDatos(j,:) = datos(i,:);
-      %nuevosDatos(j,1) = datos(i,1);
-      %nuevosDatos(j,2) = datos(i,2);
-      %nuevosDatos(j,3) = datos(i,3);
-      %nuevosDatos(j,4) = datos(i,4);
       j = j + 1;
     endif
   endfor
