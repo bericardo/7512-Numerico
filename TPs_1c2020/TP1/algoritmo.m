@@ -63,13 +63,13 @@ endfunction
 % sonFechas: es un booleano que seteamos a true si vector1 es un vector de fechas
 %
 % Hace un grafico. En este caso, vector2 siempre tiene los niveles hidrometricos
-function resultado = graficar(vector1, vector2, titulo)
+function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   
   % Lista de elementos a graficar
   legend_list = {"Nivel Hidrometrico"};
   
   % Graficador
-  plot(vector1, vector2, '-');
+  plot(vectorFechas, vectorNivelesHidrometricos, '-');
   
   datetick(gca);
   
