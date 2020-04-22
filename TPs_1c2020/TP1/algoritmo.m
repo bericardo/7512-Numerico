@@ -49,10 +49,7 @@ function resultado = minimos_anuales(datos)
       i = i + 1;
     endwhile
     
-    matrizMinimosAnuales(j,1) = dia;
-    matrizMinimosAnuales(j,2) = mes;
-    matrizMinimosAnuales(j,3) = anio;
-    matrizMinimosAnuales(j,4) = minimo_anual;
+    matrizMinimosAnuales(j,:) = [dia, mes, anio, minimo_anual];
 
     j = j + 1;
   endwhile
@@ -114,11 +111,8 @@ function resultado = minimos_mensuales(datos)
       i = i + 1;
     endwhile
 
-    matrizMinimosMensuales(j,1) = dia;
-    matrizMinimosMensuales(j,2) = mes;
-    matrizMinimosMensuales(j,3) = anio;
-    matrizMinimosMensuales(j,4) = minimo_mensual;
-
+    matrizMinimosMensuales(j,:) = [dia, mes, anio, minimo_mensual];
+    
     j = j + 1;
   endwhile
   resultado = matrizMinimosMensuales;
