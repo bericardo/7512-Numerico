@@ -6,13 +6,11 @@ datos = load('Corrientes_1960-2020.dat');
 
 %-------------------------------FUNCIONES--------------------------------------%
 
-% vector1: es un vector de una columna
-% vector2: es un vector de una columna
-% y_label: es la etiqueta que corresponde al eje Y al plotear
-% x_label: es la etiqueta que corresponde al eje X al plotear
-% sonFechas: es un booleano que seteamos a true si vector1 es un vector de fechas
+% vectorFechas: es un vector con fechas
+% vectorNivelesHidrometricos: es un vector con los niveles hidrometricos
+% titulo: es el titulo que va a tener el grafico
 %
-% Hace un grafico. En este caso, vector2 siempre tiene los niveles hidrometricos
+% Hace el grafico
 function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   % Lista de elementos a graficar
   legend_list = {"Nivel Hidrometrico"};
