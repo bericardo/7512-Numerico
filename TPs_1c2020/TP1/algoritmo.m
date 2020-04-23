@@ -54,8 +54,8 @@ endfunction
 
 % datos: matriz con los datos tal cual los cargamos desde el inicio del programa
 %
-% Devuelve un vector donde la primera columna tiene los años, la segunda los 
-% niveles hidrometricos.
+% Devuelve una matriz que tiene la misma cantidad de columnas que "datos"
+% Ademas, tambien mantiene el formato donde las columnas son dia mes anio nivel-hidrometrico
 function resultado = minimos_anuales(datos)
   matrizMinimosAnuales = [];
   dimension = rows(datos);
