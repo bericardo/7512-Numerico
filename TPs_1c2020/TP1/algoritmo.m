@@ -113,50 +113,34 @@ function resultado = minimos_mensuales(datos)
   resultado = matrizMinimosMensuales;
 endfunction
 
-# Devuelve el primer nivel hidrometrico del mes pasado por parametro que aparece
-%function resultado = obtener_un_minimo_del_mes(datos,mes)
-%  vector = [];
+% Devuelve matriz con el mes que tuvo el valor minimo de cada año
+function resultado = mes_minimo_del_anio(datos)
+  nuevaMatriz = [];
+  dimension = rows(datos);
+  i = 1;
+  j = 1;
   
-%  for i=1:rows(datos)
-%    if datos(i,2) == mes
-%      vector = datos(i,:);
-%      break
-%    endif
-%  endfor
-  
-%  resultado = vector;
-%endfunction
-
-%function resultado = min_mes(datos)
-%  matrizMinimosMensuales = [];
-  
-%  for mes=1:12
-%    vectorMinimo = obtener_un_minimo_del_mes(datos,mes); # obtiene primer nivel del mes que aparece
-%    for i=1:rows(datos)
-%      if datos(i,2) == mes && datos(i,4) < vectorMinimo(4);
-%        vectorMinimo = datos(i,:);
-%      endif
-%    endfor
+  while i < dimension
+    dia = datos(i,1);
+    mes = datos(i,2);
+    anio = datos(i,3);
+    minimo_mensual = datos(i,4);
     
-%    matrizMinimosMensuales(mes,:) = vectorMinimo;
-%  endfor
-%  resultado = matrizMinimosMensuales;
-%endfunction
-
-% Devuelve la posicion del minimo absoluto
-%function resultado = minimo_absoluto(datos)
-%  min = datos(1,4);
-%  pos = 1;
-%  
-%  for i=1:rows(datos)
-%    if datos(i,4) < min
-%      min = datos(i,4);
-%      pos = i;
-%    endif
-%  endfor
-  
-%  resultado = pos;
-%endfunction
+    while i <= dimension && datos(i,3) == anio
+      if datos(i,4) < minimo_mensual
+        dia = datos(i,1);
+        mes = datos(i,2);
+        minimo_mensual = datos(i,4);
+      endif
+      
+      i = i + 1;
+    endwhile
+    nuevaMatriz(j,:) = [dia, mes, anio, minimo_mensual];
+    
+    j = j + 1;
+  endwhile
+  resultado = nuevaMatriz;
+endfunction
 
 % Devuelve matriz con el rango del periodo especificado
 function resultado = recortar_periodo(datos,desdeAnio,hastaAnio)
@@ -194,26 +178,27 @@ endfunction
 %-------------------------------FIN DE FUNCIONES-------------------------------%
 
 % Punto a del ejercicio
-vectorFechas = convertirFechas(datos);
-graficar(vectorFechas, datos(:,4), "Serie Completa - FIUBA - 75.12");
+%vectorFechas = convertirFechas(datos);
+%graficar(vectorFechas, datos(:,4), "Serie Completa - FIUBA - 75.12");
 
 % Punto b del ejercicio
-matrizMinimosAnuales = minimos_anuales(datos);
-vectorFechas = convertirFechas(matrizMinimosAnuales);
-graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUBA - 75.12");
+%matrizMinimosAnuales = minimos_anuales(datos);
+%vectorFechas = convertirFechas(matrizMinimosAnuales);
+%graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUBA - 75.12");
 
 % Punto c del ejercicio
 %matrizMinimosMensuales = minimos_mensuales(datos);
-%vectorFechas = convertirFechas(matrizMinimosMensuales);
-%graficar(vectorFechas,matrizMinimosMensuales(:,4),"Serie de Minimos Mensuales - FIUBA - 75.12");
+%matrizMesMinimo = mes_minimo_del_anio(matrizMinimosMensuales);
+%vectorFechas = convertirFechas(matrizMesMinimo);
+%graficar(vectorFechas,matrizMesMinimo(:,4),"Serie de Minimos Mensuales - FIUBA - 75.12");
 
 % Punto d del ejercicio
-matrizMinimosAnuales = minimos_anuales(datos);
-nuevoPeriodo = recortar_periodo(matrizMinimosAnuales, 1975,2020);
+%matrizMinimosAnuales = minimos_mensuales(datos);
+%nuevoPeriodo = recortar_periodo(matrizMinimosAnuales, 1975,2020);
 
 % No se pide graficar en el punto d, asi que esto no es necesario hacerlo.
 %vectorFechas = convertirFechas(nuevoPeriodo);
 %graficar(vectorFechas,nuevoPeriodo(:,4),"Serie 1975 - 2020 - FIUBA - 75.12");
 
-periodoOrdenado = bubblesort(nuevoPeriodo); # Ordena de menor a mayor por niveles hidrometricos
-dlmwrite('ranking_5_principales_bajantes.csv', periodoOrdenado); #Exportar datos como archivo .csv
+%periodoOrdenado = bubblesort(nuevoPeriodo); # Ordena de menor a mayor por niveles hidrometricos
+%dlmwrite('ranking_5_principales_bajantes.csv', periodoOrdenado); #Exportar datos como archivo .csv
