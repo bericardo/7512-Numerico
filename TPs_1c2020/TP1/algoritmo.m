@@ -18,9 +18,6 @@ function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   % Graficador
   plot(vectorFechas, vectorNivelesHidrometricos, '-');
   
-  %set(gca,"xtick",datenum(1969,1,1:31));
-  %datetick("x","DD/MM/YY","keepticks");
-  %set (ax, "ytick", vectorNivelesHidrometricos);
   datetick(gca,3);
 
   legend(legend_list);
@@ -29,7 +26,7 @@ function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   title(titulo);
 
   % Rótulos de ejes
-  xlabel("Fecha",'fontsize',10)
+  xlabel("Fechas",'fontsize',10)
   ylabel("Nivel Hidrometrico",'fontsize',14)
   
   % Grilla
