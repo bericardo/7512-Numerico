@@ -108,7 +108,7 @@ function resultado = minimos_mensuales(datos)
     endwhile
     promedio = suma/contadorDeDiasSumados;
     
-    % Termina el programa cuando llego a feb 2020 ya esta incompleto este mes.
+    % Termina el programa cuando llego a abril 2020 ya esta incompleto este mes.
     if anio == 2020 && mes == 4
       break;
     endif
