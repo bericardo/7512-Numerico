@@ -178,13 +178,13 @@ endfunction
 %-------------------------------FIN DE FUNCIONES-------------------------------%
 
 % Punto a del ejercicio
-%vectorFechas = convertirFechas(datos);
-%graficar(vectorFechas, datos(:,4), "Serie Completa - FIUBA - 75.12");
+vectorFechas = convertirFechas(datos);
+graficar(vectorFechas, datos(:,4), "Serie Completa - FIUBA - 75.12");
 
 % Punto b del ejercicio
-%matrizMinimosAnuales = minimos_anuales(datos);
-%vectorFechas = convertirFechas(matrizMinimosAnuales);
-%graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUBA - 75.12");
+matrizMinimosAnuales = minimos_anuales(datos);
+vectorFechas = convertirFechas(matrizMinimosAnuales);
+graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUBA - 75.12");
 
 % Punto c del ejercicio
 matrizPromediosMensuales = minimos_mensuales(datos);
@@ -197,12 +197,12 @@ vectorFechas = convertirFechas(periodoRecortado);
 graficar(vectorFechas,periodoRecortado(:,4),"Serie Mes Promedio Minimo Ano 1969 - FIUBA - 75.12");
 
 % Punto d del ejercicio
-%matrizMinimosAnuales = minimos_anuales(datos);
-%nuevoPeriodo = recortar_periodo(matrizMinimosAnuales, 1975,2020);
+matrizMinimosAnuales = minimos_anuales(datos);
+nuevoPeriodo = recortar_periodo(matrizMinimosAnuales, 1975,2020);
 
 % No se pide graficar en el punto d, asi que esto no es necesario hacerlo.
 %vectorFechas = convertirFechas(nuevoPeriodo);
 %graficar(vectorFechas,nuevoPeriodo(:,4),"Serie 1975 - 2020 - FIUBA - 75.12");
 
-%periodoOrdenado = bubblesort(nuevoPeriodo); # Ordena de menor a mayor por niveles hidrometricos
-%dlmwrite('ranking_5_principales_bajantes.csv', periodoOrdenado); #Exportar datos como archivo .csv
+periodoOrdenado = bubblesort(nuevoPeriodo); # Ordena de menor a mayor por niveles hidrometricos
+dlmwrite('ranking_5_principales_bajantes.csv', periodoOrdenado); #Exportar datos como archivo .csv
