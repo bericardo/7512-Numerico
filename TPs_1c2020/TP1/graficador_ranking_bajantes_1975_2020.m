@@ -17,6 +17,7 @@ legend("Marzo 2020","Agosto 2001","Septiembre 2001","Agosto 2009","Enero 1989");
 xlabel("Dia",'fontsize',10);
 ylabel("Nivel Hidrometrico",'fontsize',14);
 set(gca,'fontsize',20);
+set(gca (), "xlim",[0,31]);
 
 text(31,1.28,"1.31");
 text(31,1.4,"1.4");
@@ -24,4 +25,4 @@ text(31,2,"1.4");
 text(31,3,"1.47");
 text(31,5,"1.54");
 
-print -djpg "ranking_bajantes_1975-2020.jpg"
+%print -djpg "ranking_bajantes_1975-2020.jpg"
