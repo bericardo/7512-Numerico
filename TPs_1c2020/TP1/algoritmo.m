@@ -129,7 +129,7 @@ endfunction
 % Devuelve un vector con datos del mes que tiene en promedio el menor nivel hidrometrico
 function resultado = obtener_mes_minimo_promedio(datos)
   dimension = rows(datos);
-  minimo = datos(1,4)
+  minimo = datos(1,4);
   vectorConMinimo = datos(1,:);
   i = 1;
   
