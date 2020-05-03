@@ -18,7 +18,7 @@ function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   % Graficador
   plot(vectorFechas, vectorNivelesHidrometricos, '-');
   
-  datetick(gca,3);
+  datetick(gca);
 
   legend(legend_list);
   
@@ -35,7 +35,7 @@ function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   % Tamaño de letra de los n
   set(gca,'fontsize',20); % sets font of numbers on axes
   
-  print -djpg serie_mes_promedio_minimo_1969.jpg
+  %print -djpg serie_mes_promedio_minimo_1969.jpg
 endfunction
 
 % datos: matriz con los datos tal cual los cargamos desde el inicio del programa
@@ -80,6 +80,11 @@ function resultado = minimos_anuales(datos)
       i = i + 1;
     endwhile
     
+    % El año 2020 no esta completo asi que no lo tomamos
+    if anio == 2020
+      break;
+    endif
+    
     matrizMinimosAnuales(j,:) = [dia, mes, anio, minimo_anual];
     j = j + 1;
   endwhile
@@ -93,27 +98,28 @@ function resultado = minimos_mensuales(datos)
   j = 1;
 
   while i <= dimension
-    suma = 0;
-    promedio = 0;
-    contadorDeDiasSumados = 0;
-    
     anio = datos(i,3);
     mes = datos(i,2);
+    dia = datos(i,1);
+    minimo_mensual = datos(i,4);
 
-    % Sumo todos los valores del mes
+    % Busca minimo del mes
     while i <= dimension && datos(i,2) == mes
-      suma = suma + datos(i,4);
-      contadorDeDiasSumados = contadorDeDiasSumados + 1;
+      if datos(i,4) < minimo_mensual
+        minimo_mensual = datos(i,4);
+        mes = datos(i,2);
+        dia = datos(i,1);
+      endif
+      
       i = i + 1;
     endwhile
-    promedio = suma/contadorDeDiasSumados;
     
     % Termina el programa cuando llego a abril 2020 ya esta incompleto este mes.
     if anio == 2020 && mes == 4
       break;
     endif
     
-    matrizPromediosMensuales(j,:) = [0, mes, anio, promedio];
+    matrizPromediosMensuales(j,:) = [dia, mes, anio, minimo_mensual];
     j = j + 1;
   endwhile
   
@@ -186,12 +192,12 @@ graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUB
 % Punto c del ejercicio
 matrizPromediosMensuales = minimos_mensuales(datos);
 
-% El mes es Septiembre del año 1969 y el valor del promedio es 0.05699999999999997
+% El mes es Septiembre del año 1969 y el valor del promedio es 0.-0.050000
 vectorMesMinimo = obtener_mes_minimo_promedio(matrizPromediosMensuales);
 
-periodoRecortado = recortar_periodo(datos,1969,1969); 
-vectorFechas = convertirFechas(periodoRecortado);
-graficar(vectorFechas,periodoRecortado(:,4),"Serie Mes Promedio Minimo Ano 1969 - FIUBA - 75.12");
+%periodoRecortado = recortar_periodo(datos,1969,1969); 
+vectorFechas = convertirFechas(matrizPromediosMensuales);
+graficar(vectorFechas,matrizPromediosMensuales(:,4),"Serie Mes Promedio Minimo Ano 1969 - FIUBA - 75.12");
 
 % Punto d del ejercicio
 matrizMinimosAnuales = minimos_anuales(datos);
