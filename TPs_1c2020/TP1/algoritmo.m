@@ -26,7 +26,7 @@ function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   title(titulo);
 
   % Rótulos de ejes
-  xlabel("Fechas",'fontsize',10)
+  xlabel("Fecha",'fontsize',10)
   ylabel("Nivel Hidrometrico",'fontsize',14)
   
   % Grilla
@@ -35,7 +35,7 @@ function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   % Tamaño de letra de los n
   set(gca,'fontsize',20); % sets font of numbers on axes
   
-  print -djpg serie_minimos_anuales.jpg
+  %print -djpg serie_minimos_anuales.jpg
 endfunction
 
 % datos: matriz con los datos tal cual los cargamos desde el inicio del programa
@@ -127,7 +127,7 @@ function resultado = minimos_mensuales(datos)
 endfunction
 
 % Devuelve un vector con datos del mes que tiene en promedio el menor nivel hidrometrico
-function resultado = obtener_mes_minimo_promedio(datos)
+function resultado = obtener_mes_minimo(datos)
   dimension = rows(datos);
   minimo = datos(1,4);
   vectorConMinimo = datos(1,:);
@@ -173,7 +173,7 @@ function s = bubblesort(v)
         v(i+1,:) = aux;
         hasChanged = true;
       endif
-     endfor
+    endfor
   until(hasChanged == false)
   s = v;
 endfunction
@@ -192,8 +192,8 @@ graficar(vectorFechas,matrizMinimosAnuales(:,4),"Serie de Minimos Anuales - FIUB
 % Punto c del ejercicio
 matrizPromediosMensuales = minimos_mensuales(datos);
 
-% El mes es Septiembre del año 1969 y el valor del promedio es 0.-0.050000
-vectorMesMinimo = obtener_mes_minimo_promedio(matrizPromediosMensuales);
+% El mes es Septiembre del año 1969 y el valor del promedio es -0.05
+vectorMesMinimo = obtener_mes_minimo(matrizPromediosMensuales);
 
 vectorFechas = convertirFechas(matrizPromediosMensuales);
 graficar(vectorFechas,matrizPromediosMensuales(:,4),"Serie Minimos Mensuales - FIUBA - 75.12");
