@@ -1,3 +1,10 @@
+% Este codigo corresponde al gráfico llamado "Ranking 5 1975-2020 - FIUBA 75.12"
+%
+% Los datos para graficar estos datos se armo manualmente. Se copió los 31 dias
+% de cada mes que aparece en el ranking en un archivo .csv y se los ploteó. 
+% Para los meses que tienen menos de 31 dias, se duplicó el dato del último día
+% para completar los 31 días.
+
 clear all
 close all
 
@@ -32,4 +39,5 @@ text(31,2,"1.4");
 text(31,3,"1.47");
 text(31,5,"1.54");
 
-%print -djpg "ranking_bajantes_1975-2020.jpg"
+% Exportamos el grafico
+print -djpg "ranking_bajantes_1975-2020.jpg"
