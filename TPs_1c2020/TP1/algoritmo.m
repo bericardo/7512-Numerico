@@ -160,22 +160,26 @@ function resultado = recortar_periodo(datos,desdeAnio,hastaAnio)
   resultado = nuevosDatos;
 endfunction
 
-% Ordena la matriz por niveles hidrometricos de menor a mayor
-function s = bubblesort(v)
-  itemCount = length(v);
-  do
-    hasChanged = false;
-    itemCount--;
-    for i = 1:itemCount
-      if ( v(i,4) > v(i+1,4) )
-        aux = v(i,:);
-        v(i,:) = v(i+1,:);
-        v(i+1,:) = aux;
-        hasChanged = true;
+% Ordena la matriz de menor a mayor por nivel hidrometrico
+function resultado = ordenarMatriz(datos)
+  dimension = rows(datos);
+  vector_auxiliar = [];
+  i = 1;
+  
+  while i < dimension
+    j = i + 1;
+    while j <= dimension
+      if datos(j,4) < datos(i,4)
+        vector_auxiliar = datos(i,:);
+        datos(i,:) = datos(j,:);
+        datos(j,:) = vector_auxiliar;        
       endif
-    endfor
-  until(hasChanged == false)
-  s = v;
+      
+      j = j + 1;
+    endwhile
+    i = i + 1;
+  endwhile
+  resultado = datos;
 endfunction
 
 %-------------------------------FIN DE FUNCIONES-------------------------------%
@@ -202,5 +206,5 @@ graficar(vectorFechas,matrizPromediosMensuales(:,4),"Serie Minimos Mensuales - F
 matrizMinimosAnuales = minimos_mensuales(datos);
 nuevoPeriodo = recortar_periodo(matrizMinimosAnuales, 1975,2020);
 
-periodoOrdenado = bubblesort(nuevoPeriodo); # Ordena de menor a mayor por niveles hidrometricos
+periodoOrdenado = ordenarMatriz(nuevoPeriodo); # Ordena de menor a mayor por niveles hidrometricos
 dlmwrite('ranking_5_principales_bajantes.csv', periodoOrdenado); #Exportar datos como archivo .csv
