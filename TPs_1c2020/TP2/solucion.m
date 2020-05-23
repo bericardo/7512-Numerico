@@ -1,10 +1,7 @@
 clear all
 close all
 
-A = [1 1 1 0;
-     0 2 1 0;
-     10 1 6 0
-     1 50 0 0];
+A = [4 1 3;2 8 1;3 -10 2];
 
 % Devuelve 1 si la diagonal es dominante, false en caso contrario.
 function resultado = diagonal_dominante(A)
@@ -36,7 +33,7 @@ function resultado = diagonal_dominante(A)
 endfunction
 
 % Cambia el pivote actual si hay otro valor mayor a este en modulo en alguna fila
-function resultado = pivoteo_parcial(A,fila, columna)
+function resultado = pivoteo_parcial(A,fila,columna)
   dimFila = rows(A);
   pivote = abs(A(fila,columna));
   fila_pos_max = 0; % indice de la fila en la que esta el valor maximo
@@ -58,5 +55,24 @@ function resultado = pivoteo_parcial(A,fila, columna)
     A(fila_pos_max,:) = vector_fila_aux;
   endif
   
+  resultado = A;
+endfunction
+
+% Triangula la matriz A usando metodo de eliminacion de gauss
+function resultado = triangular(A)
+  es_diagonal_dominante = diagonal_dominante(A);
+  
+  for j=1:columns(A)-1
+    % Aplica pivoteo solo si no es matriz de diagonal dominante
+    if es_diagonal_dominante == 0
+      A = pivoteo_parcial(A,j,j);
+    endif
+    
+    for i=j+1:rows(A)
+      m = A(i,j)/A(j,j); % Calculo el multiplicador
+      A(i,:) = A(i,:) - m*A(j,:);
+    endfor
+    
+  endfor
   resultado = A;
 endfunction
