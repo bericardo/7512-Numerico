@@ -1,6 +1,7 @@
-
 clear all
 close all
+
+%--------------------------------FUNCIONES-------------------------------------%
 
 % Devuelve true si la diagonal es dominante, false en caso contrario.
 %
@@ -8,14 +9,13 @@ close all
 function resultado = es_diagonal_dominante(A)
   dimFil = rows(A);
   dimCol = columns(A);
-  
   diagonal_es_dominante = true;
   
   for i=1:dimFil
     valor_diagonal = abs(A(i,i));
     suma = 0;
     
-    % Suma el modulo de los valores de la fila i
+    % Suma el modulo de los valores de la fila i excepto el de la diagonal
     for j=1:dimCol-1
       if j ~= i
         suma = suma + abs(A(i,j));
@@ -26,7 +26,6 @@ function resultado = es_diagonal_dominante(A)
     if suma > valor_diagonal
       diagonal_es_dominante = false;
       break;
-
     endif
   endfor
   
@@ -53,7 +52,7 @@ function resultado = pivoteo_parcial(A, fila, columna)
     endif  
   endfor
   
-  % Intercambio las filas
+  % Intercambio las filas si el nuevo pivote no es el pivote actual
   if fila_pos_max ~= fila && fila_pos_max ~= 0
     vector_fila_aux = A(fila,:);
     A(fila,:) = A(fila_pos_max,:);
@@ -69,8 +68,7 @@ endfunction
 function resultado = triangular(A)
   diagonal_es_dominante = es_diagonal_dominante(A);
   
-  % Si le paso a esta funcion la matriz ampliada tengo que terminar una columna mas antes
-  for j=1:columns(A)-2
+  for j=1:rows(A)-1
     % Aplica pivoteo solo si no es matriz de diagonal dominante
     if diagonal_es_dominante == 0
       A = pivoteo_parcial(A,j,j);
@@ -88,24 +86,21 @@ endfunction
 % Realiza sustitucion inversa y devuelve un vector que contiene el valor de las incognitas
 %
 % A es la matriz ampliada A|b y es una matriz triangulada
-% soluciones es un vector que contiene el valor de las incognitas. Seria el x de la ecuacion Ax=b
-% i es la fila de la matriz A
-function resultado = sustitucion_inversa(A,soluciones = [],i = 1)
-  soluciones(i) = 0;
+function resultado = sustitucion_inversa(A)
+  soluciones = zeros(rows(A),1);
   
-  if i ~= rows(A)
-    soluciones = sustitucion_inversa(A,soluciones,i+1);
-  endif
-  
-  suma = 0;
-  for j=i+1:columns(A)-1
-    if j ~= i % El valor de la columna i es el que tengo que dividir, no lo incluyo en la suma
-      suma = suma + A(i,j)*(-1)*soluciones(j);
-    endif
+  for i=rows(A):-1:1
+    suma = 0;
+    
+    for j=i+1:columns(A)-1
+      if j ~= i % El valor de la columna i es el que tengo que dividir, no lo incluyo en la suma
+        suma = suma + A(i,j)*(-1)*soluciones(j);
+      endif
+    endfor
+    
+    b = A(i,columns(A));
+    soluciones(i) = (b + suma) / A(i,i);
   endfor
-
-  b = A(i,columns(A));
-  soluciones(i) = (b + suma) / A(i,i);
 
   resultado = soluciones;
 endfunction
@@ -136,3 +131,15 @@ function [L,U] = factorizar(A)
   U = A;
   L = L;
 endfunction
+
+%--------------------------------PRINCIPAL-------------------------------------%
+alpha = (53*pi)/180;
+beta = (37*pi)/180;
+
+%A = [-cos(alpha) 0 cos(beta) 0 0 0 -G;
+%     -sin(alpha) 0 -sin(beta) 0 0 0 F;
+%     cos(alpha) 1 0 1 0 0 0;
+%     sin(alpha) 0 0 0 1 0 0;
+%     0 -1 -cos(beta) 0 0 0 0;
+%     0 0 sin(beta) 0 0 1 0];
+% punto c)
