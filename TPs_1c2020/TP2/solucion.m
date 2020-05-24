@@ -1,7 +1,8 @@
+% ACLARACION:
+% En todos los casos se supone que la matriz A es la matriz ampliada (A|b)
+
 clear all
 close all
-
-A = [4 1 3;2 8 1;3 -10 2];
 
 % Devuelve 1 si la diagonal es dominante, false en caso contrario.
 function resultado = diagonal_dominante(A)
@@ -15,7 +16,7 @@ function resultado = diagonal_dominante(A)
     suma = 0;
     
     % Suma el modulo de los valores de la fila i
-    for j=1:dimCol
+    for j=1:dimCol-1
       if j ~= i
         suma = suma + abs(A(i,j));
       endif
@@ -62,7 +63,8 @@ endfunction
 function resultado = triangular(A)
   es_diagonal_dominante = diagonal_dominante(A);
   
-  for j=1:columns(A)-1
+  % Si le paso a esta funcion la matriz ampliada tengo que terminar una columna mas antes
+  for j=1:columns(A)-2
     % Aplica pivoteo solo si no es matriz de diagonal dominante
     if es_diagonal_dominante == 0
       A = pivoteo_parcial(A,j,j);
@@ -75,4 +77,26 @@ function resultado = triangular(A)
     
   endfor
   resultado = A;
+endfunction
+
+% En este caso la matriz A es la matriz ampliada (A|b)
+% i es la fila de la matriz
+function resultado = sustitucion_inversa(A,soluciones = [],i = 1)
+  soluciones(i) = 0;
+  
+  if i ~= rows(A)
+    soluciones = sustitucion_inversa(A,soluciones,i+1);
+  endif
+  
+  suma = 0;
+  for j=1:columns(A)-1
+    if j ~= i % El valor de la columna i es el que tengo que dividir, no lo incluyo en la suma
+      suma = suma + A(i,j)*(-1)*soluciones(j);
+    endif
+  endfor
+
+  b = A(i,columns(A));
+  soluciones(i) = (b + suma) / A(i,i);
+  
+  resultado = soluciones;
 endfunction
