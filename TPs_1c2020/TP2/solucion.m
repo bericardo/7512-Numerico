@@ -97,6 +97,34 @@ function resultado = sustitucion_inversa(A,soluciones = [],i = 1)
 
   b = A(i,columns(A));
   soluciones(i) = (b + suma) / A(i,i);
-  
+
   resultado = soluciones;
+endfunction
+
+% En este caso la matriz A no es la matriz ampliada
+function [L,U] = fact_lu(A)
+  es_diagonal_dominante = diagonal_dominante(A);
+  L = zeros(rows(A),columns(A));
+  U = [];
+  
+  % Si le paso a esta funcion la matriz ampliada tengo que terminar una columna mas antes
+  for j=1:columns(A)-1
+    % Aplica pivoteo solo si no es matriz de diagonal dominante
+    if es_diagonal_dominante == 0
+      A = pivoteo_parcial(A,j,j);
+    endif
+    
+    for i=j+1:rows(A)
+      m = A(i,j)/A(j,j); % Calculo el multiplicador
+      
+      L(j,j) = 1;
+      L(i,j) = m;
+      
+      A(i,:) = A(i,:) - m*A(j,:);
+    endfor
+  endfor
+  L(rows(L),columns(L)) = 1;
+  
+  U = A(:,1:columns(A));
+  L = L(:,1:columns(L));
 endfunction
