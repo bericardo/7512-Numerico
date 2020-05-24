@@ -1,10 +1,10 @@
-% ACLARACION:
-% En todos los casos se supone que la matriz A es la matriz ampliada (A|b)
 
 clear all
 close all
 
-% Devuelve 1 si la diagonal es dominante, false en caso contrario.
+% Devuelve true si la diagonal es dominante, false en caso contrario.
+%
+% A es la matriz ampliada A|b
 function resultado = diagonal_dominante(A)
   dimFil = rows(A);
   dimCol = columns(A);
@@ -33,8 +33,12 @@ function resultado = diagonal_dominante(A)
   resultado = es_diagonal_dominante;
 endfunction
 
-% Cambia el pivote actual si hay otro valor mayor a este en modulo en alguna fila
-function resultado = pivoteo_parcial(A,fila,columna)
+% Aplica pivoteo parcial a la matriz A y devuelve la matriz
+%
+% A es la matriz ampliada A|b a la cual se le aplica el pivoteo
+% fila es el indice de la fila en la que esta el pivote
+% columna es el indice de la columna en la que esta el pivote
+function resultado = pivoteo_parcial(A, fila, columna)
   dimFila = rows(A);
   pivote = abs(A(fila,columna));
   fila_pos_max = 0; % indice de la fila en la que esta el valor maximo
@@ -59,7 +63,9 @@ function resultado = pivoteo_parcial(A,fila,columna)
   resultado = A;
 endfunction
 
-% Triangula la matriz A usando metodo de eliminacion de gauss
+% Triangula la matriz A usando metodo de eliminacion de gauss y devuele la matriz
+%
+% A es la matriz ampliada A|b
 function resultado = triangular(A)
   es_diagonal_dominante = diagonal_dominante(A);
   
@@ -79,8 +85,11 @@ function resultado = triangular(A)
   resultado = A;
 endfunction
 
-% En este caso la matriz A es la matriz ampliada (A|b)
-% i es la fila de la matriz
+% Realiza sustitucion inversa y devuelve un vector que contiene el valor de las incognitas
+%
+% A es la matriz ampliada A|b y es una matriz triangulada
+% soluciones es un vector que contiene el valor de las incognitas. Seria el x de la ecuacion Ax=b
+% i es la fila de la matriz A
 function resultado = sustitucion_inversa(A,soluciones = [],i = 1)
   soluciones(i) = 0;
   
@@ -89,7 +98,7 @@ function resultado = sustitucion_inversa(A,soluciones = [],i = 1)
   endif
   
   suma = 0;
-  for j=1:columns(A)-1
+  for j=i+1:columns(A)-1
     if j ~= i % El valor de la columna i es el que tengo que dividir, no lo incluyo en la suma
       suma = suma + A(i,j)*(-1)*soluciones(j);
     endif
@@ -101,30 +110,30 @@ function resultado = sustitucion_inversa(A,soluciones = [],i = 1)
   resultado = soluciones;
 endfunction
 
-% En este caso la matriz A no es la matriz ampliada
-function [L,U] = fact_lu(A)
+% Realiza la factorizacion LU y devuelve dos matrices: L y U
+%
+% A es solo la matriz A, no es la matriz ampliada
+function [L,U] = factorizar(A)
   es_diagonal_dominante = diagonal_dominante(A);
   L = zeros(rows(A),columns(A));
   U = [];
   
-  % Si le paso a esta funcion la matriz ampliada tengo que terminar una columna mas antes
   for j=1:columns(A)-1
-    % Aplica pivoteo solo si no es matriz de diagonal dominante
-    if es_diagonal_dominante == 0
+    
+    if es_diagonal_dominante == 0 % Aplica pivoteo solo si no es matriz de diagonal dominante
       A = pivoteo_parcial(A,j,j);
     endif
     
     for i=j+1:rows(A)
-      m = A(i,j)/A(j,j); % Calculo el multiplicador
+      multiplicador = A(i,j)/A(j,j);
+      A(i,:) = A(i,:) - multiplicador*A(j,:);
       
       L(j,j) = 1;
-      L(i,j) = m;
-      
-      A(i,:) = A(i,:) - m*A(j,:);
+      L(i,j) = multiplicador;
     endfor
   endfor
   L(rows(L),columns(L)) = 1;
   
-  U = A(:,1:columns(A));
-  L = L(:,1:columns(L));
+  U = A;
+  L = L;
 endfunction
