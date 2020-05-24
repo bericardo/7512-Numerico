@@ -5,11 +5,11 @@ close all
 % Devuelve true si la diagonal es dominante, false en caso contrario.
 %
 % A es la matriz ampliada A|b
-function resultado = diagonal_dominante(A)
+function resultado = es_diagonal_dominante(A)
   dimFil = rows(A);
   dimCol = columns(A);
   
-  es_diagonal_dominante = true;
+  diagonal_es_dominante = true;
   
   for i=1:dimFil
     valor_diagonal = abs(A(i,i));
@@ -24,13 +24,13 @@ function resultado = diagonal_dominante(A)
     
     % Si la suma anterior es mayor que el valor de la diagonal no sera diagonal dominante
     if suma > valor_diagonal
-      es_diagonal_dominante = false;
+      diagonal_es_dominante = false;
       break;
 
     endif
   endfor
   
-  resultado = es_diagonal_dominante;
+  resultado = diagonal_es_dominante;
 endfunction
 
 % Aplica pivoteo parcial a la matriz A y devuelve la matriz
@@ -67,12 +67,12 @@ endfunction
 %
 % A es la matriz ampliada A|b
 function resultado = triangular(A)
-  es_diagonal_dominante = diagonal_dominante(A);
+  diagonal_es_dominante = es_diagonal_dominante(A);
   
   % Si le paso a esta funcion la matriz ampliada tengo que terminar una columna mas antes
   for j=1:columns(A)-2
     % Aplica pivoteo solo si no es matriz de diagonal dominante
-    if es_diagonal_dominante == 0
+    if diagonal_es_dominante == 0
       A = pivoteo_parcial(A,j,j);
     endif
     
@@ -114,13 +114,12 @@ endfunction
 %
 % A es solo la matriz A, no es la matriz ampliada
 function [L,U] = factorizar(A)
-  es_diagonal_dominante = diagonal_dominante(A);
+  diagonal_es_dominante = es_diagonal_dominante(A);
   L = zeros(rows(A),columns(A));
   U = [];
   
   for j=1:columns(A)-1
-    
-    if es_diagonal_dominante == 0 % Aplica pivoteo solo si no es matriz de diagonal dominante
+    if diagonal_es_dominante == 0 % Aplica pivoteo solo si no es matriz de diagonal dominante
       A = pivoteo_parcial(A,j,j);
     endif
     
