@@ -37,13 +37,13 @@ endfunction
 % A es la matriz ampliada A|b a la cual se le aplica el pivoteo
 % fila es el indice de la fila en la que esta el pivote
 % columna es el indice de la columna en la que esta el pivote
-function resultado = pivoteo_parcial(A, fila, columna)
+function [A,L,v] = pivoteo_parcial(A, L, v, fila, columna,factorizacion=0)
   dimFila = rows(A);
   pivote = abs(A(fila,columna));
   fila_pos_max = 0; % indice de la fila en la que esta el valor maximo
   
   % Recorro las filas de la columna dada en busca del valor maximo
-  for i=fila:dimFila
+  for i=fila+1:dimFila
     valor_fila = abs(A(i,columna));
     
     if valor_fila > pivote
@@ -54,12 +54,24 @@ function resultado = pivoteo_parcial(A, fila, columna)
   
   % Intercambio las filas si el nuevo pivote no es el pivote actual
   if fila_pos_max ~= fila && fila_pos_max ~= 0
+    aux = v(fila);
+    v(fila) = v(fila_pos_max);
+    v(fila_pos_max) = aux;
+    
     vector_fila_aux = A(fila,:);
     A(fila,:) = A(fila_pos_max,:);
     A(fila_pos_max,:) = vector_fila_aux;
+    
+    if factorizacion == 1
+      vector_fila_aux = L(fila,:);
+      L(fila,:) = L(fila_pos_max,:);
+      L(fila_pos_max,:) = vector_fila_aux;
+    endif
   endif
   
-  resultado = A;
+  A = A;
+  L = L;
+  v = v;
 endfunction
 
 % Triangula la matriz A usando metodo de eliminacion de gauss y devuele la matriz
@@ -67,11 +79,13 @@ endfunction
 % A es la matriz ampliada A|b
 function resultado = triangular(A)
   diagonal_es_dominante = es_diagonal_dominante(A);
+  v = [1:rows(A)];
+  L = [];
   
   for j=1:rows(A)-1
     % Aplica pivoteo solo si no es matriz de diagonal dominante
     if diagonal_es_dominante == 0
-      A = pivoteo_parcial(A,j,j);
+      [A,L,v] = pivoteo_parcial(A,L,v,j,j);
     endif
     
     for i=j+1:rows(A)
@@ -105,20 +119,51 @@ function resultado = sustitucion_inversa(A)
   resultado = soluciones;
 endfunction
 
+function resultado = sustitucion_directa(A)
+  soluciones = zeros(rows(A),1);
+  
+  for i=1:rows(A)
+    suma = 0;
+    
+    for j=1:i-1
+      if j ~= i % El valor de la columna i es el que tengo que dividir, no lo incluyo en la suma
+        suma = suma + A(i,j)*(-1)*soluciones(j);
+      endif
+    endfor
+    
+    b = A(i,columns(A));
+    soluciones(i) = (b + suma) / A(i,i);
+  endfor
+
+  resultado = soluciones;
+endfunction
+
+function P = crear_matriz_permutacion(v,fil,col)
+  P = zeros(fil,col);
+  for i=1:columns(v)
+    P(i,v(i)) = 1;
+  endfor
+  
+  P = P;
+endfunction
+
 % Realiza la factorizacion LU y devuelve dos matrices: L y U
 %
 % A es solo la matriz A, no es la matriz ampliada
-function [L,U] = factorizar(A)
+function [L,U,P] = factorizar(A)
   diagonal_es_dominante = es_diagonal_dominante(A);
-  L = zeros(rows(A),columns(A));
+  dimFil = rows(A);
+  dimCol = columns(A);
+  L = zeros(dimFil,dimCol);
   U = [];
+  v = [1:dimFil];
   
-  for j=1:columns(A)-1
-    if diagonal_es_dominante == 0 % Aplica pivoteo solo si no es matriz de diagonal dominante
-      A = pivoteo_parcial(A,j,j);
+  for j=1:dimCol-1
+    if diagonal_es_dominante == 0
+      [A,L,v] = pivoteo_parcial(A,L,v,j,j,1);
     endif
     
-    for i=j+1:rows(A)
+    for i=j+1:dimFil
       multiplicador = A(i,j)/A(j,j);
       A(i,:) = A(i,:) - multiplicador*A(j,:);
       
@@ -130,16 +175,19 @@ function [L,U] = factorizar(A)
   
   U = A;
   L = L;
+  P = crear_matriz_permutacion(v,dimFil,dimCol);
 endfunction
 
 %--------------------------------PRINCIPAL-------------------------------------%
 alpha = (53*pi)/180;
 beta = (37*pi)/180;
+G = 100;
+F = 1000;
 
-%A = [-cos(alpha) 0 cos(beta) 0 0 0 -G;
-%     -sin(alpha) 0 -sin(beta) 0 0 0 F;
-%     cos(alpha) 1 0 1 0 0 0;
-%     sin(alpha) 0 0 0 1 0 0;
-%     0 -1 -cos(beta) 0 0 0 0;
-%     0 0 sin(beta) 0 0 1 0];
+A = [-cos(alpha) 0 cos(beta) 0 0 0 -G;
+     -sin(alpha) 0 -sin(beta) 0 0 0 F;
+     cos(alpha) 1 0 1 0 0 0;
+     sin(alpha) 0 0 0 1 0 0;
+     0 -1 -cos(beta) 0 0 0 0;
+     0 0 sin(beta) 0 0 1 0];
 % punto c)
