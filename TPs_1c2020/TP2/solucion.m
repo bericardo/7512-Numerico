@@ -216,6 +216,7 @@ A = [-cos(alpha) 0 cos(beta) 0 0 0;
      0 0 sin(beta) 0 0 1];
 
 % punto c)
+disp("EJERCICIO 3:\n");
 t = cputime;
 resolver_con_gauss(A,1000,100);
 tiempo_gauss = cputime-t;
@@ -226,3 +227,26 @@ tiempo_lu = cputime-t;
 
 printf('Eliminacion de Gauss tardo: %f segundos\n', tiempo_gauss);
 printf('Descomposicion LU tardo: %f segundos\n', tiempo_lu);
+
+% punto d)
+disp("\nEJERCICIO D:\n");
+matriz_con_soluciones = [];
+[L,U,P] = factorizar(A);
+
+for i=1:10
+  F = 1000*(1 + (i/10));
+  G = 100*(1 + (i/10));
+  
+  b = [-G; F; 0; 0; 0; 0];
+  
+  L(:,7) = P*b;
+  y = sustitucion_directa(L);
+  
+  U(:,7) = y;
+  x = sustitucion_inversa(U);
+  
+  matriz_con_soluciones(:,i) = x;
+endfor
+
+disp(matriz_con_soluciones);
+
