@@ -178,16 +178,51 @@ function [L,U,P] = factorizar(A)
   P = crear_matriz_permutacion(v,dimFil,dimCol);
 endfunction
 
+function resultado = resolver_con_gauss(A,F,G)
+  b = [-G; F; 0; 0; 0; 0];
+  
+  A(:,columns(A)+1) = b;
+  
+  A_triangulada = triangular(A);
+  x = sustitucion_inversa(A_triangulada);
+  
+  resultado=x;
+endfunction
+
+function resultado = resolver_con_descomposicion(A,F,G)
+  b = [-G; F; 0; 0; 0; 0];
+  
+  [L,U,P] = factorizar(A);
+  
+  L(:,columns(L)+1) = P*b;
+  y = sustitucion_directa(L);
+  
+  U(:,columns(U)+1) = y;
+  x = sustitucion_inversa(U);
+  
+  resultado = x;
+endfunction
+
 %--------------------------------PRINCIPAL-------------------------------------%
+
 alpha = (53*pi)/180;
 beta = (37*pi)/180;
-G = 100;
-F = 1000;
 
-A = [-cos(alpha) 0 cos(beta) 0 0 0 -G;
-     -sin(alpha) 0 -sin(beta) 0 0 0 F;
-     cos(alpha) 1 0 1 0 0 0;
-     sin(alpha) 0 0 0 1 0 0;
-     0 -1 -cos(beta) 0 0 0 0;
-     0 0 sin(beta) 0 0 1 0];
+A = [-cos(alpha) 0 cos(beta) 0 0 0;
+     -sin(alpha) 0 -sin(beta) 0 0 0;
+     cos(alpha) 1 0 1 0 0;
+     sin(alpha) 0 0 0 1 0;
+     0 -1 -cos(beta) 0 0 0 ;
+     0 0 sin(beta) 0 0 1];
+
 % punto c)
+t = cputime;
+resolver_con_gauss(A,1000,100);
+tiempo_gauss = cputime-t;
+
+t = cputime;
+resolver_con_descomposicion(A,1000,100);
+tiempo_lu = cputime-t;
+
+printf('Eliminacion de Gauss tardo: %f segundos\n', tiempo_gauss);
+printf('Descomposicion LU tardo: %f segundos\n', tiempo_lu);
