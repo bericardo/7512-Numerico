@@ -22,7 +22,6 @@ function resultado = es_diagonal_dominante(A)
       endif
     endfor
     
-    % Si la suma anterior es mayor que el valor de la diagonal no sera diagonal dominante
     if suma > valor_diagonal
       diagonal_es_dominante = false;
       break;
