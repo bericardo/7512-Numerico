@@ -37,31 +37,34 @@ endfunction
 % A es la matriz ampliada A|b a la cual se le aplica el pivoteo
 % fila es el indice de la fila en la que esta el pivote
 % columna es el indice de la columna en la que esta el pivote
-function [A,L,v] = pivoteo_parcial(A, L, v, fila, columna,factorizacion=0)
+% factorizacion es 1 si se esta haciendo una descomposicion, 0 si es una triangulacion
+function [A,L,v] = pivoteo_parcial(A, L, vector_permutacion, fila, columna,factorizacion=0)
   dimFila = rows(A);
   pivote = abs(A(fila,columna));
-  fila_pos_max = 0; % indice de la fila en la que esta el valor maximo
+  fila_pos_max = 0;
   
-  % Recorro las filas de la columna dada en busca del valor maximo
+  % Verifica si hay un valor mayor al pivote en cada paso k y guarda su posicion(fila) en fila_pos_max
   for i=fila+1:dimFila
     valor_fila = abs(A(i,columna));
-    
     if valor_fila > pivote
       pivote = valor_fila;
       fila_pos_max = i;
     endif  
   endfor
   
-  % Intercambio las filas si el nuevo pivote no es el pivote actual
+  % Intercambia las filas si el nuevo pivote no es el pivote actual
   if fila_pos_max ~= fila && fila_pos_max ~= 0
-    aux = v(fila);
-    v(fila) = v(fila_pos_max);
-    v(fila_pos_max) = aux;
+    % Permuta filas del vector permutacion
+    aux = vector_permutacion(fila);
+    vector_permutacion(fila) = vector_permutacion(fila_pos_max);
+    vector_permutacion(fila_pos_max) = aux;
     
+    % Permuta filas de la matriz A
     vector_fila_aux = A(fila,:);
     A(fila,:) = A(fila_pos_max,:);
     A(fila_pos_max,:) = vector_fila_aux;
     
+    % Permuta filas de L, si corresponde
     if factorizacion == 1
       vector_fila_aux = L(fila,:);
       L(fila,:) = L(fila_pos_max,:);
@@ -71,7 +74,7 @@ function [A,L,v] = pivoteo_parcial(A, L, v, fila, columna,factorizacion=0)
   
   A = A;
   L = L;
-  v = v;
+  v = vector_permutacion;
 endfunction
 
 % Triangula la matriz A usando metodo de eliminacion de gauss y devuele la matriz
@@ -83,35 +86,36 @@ function resultado = triangular(A)
   L = [];
   
   for j=1:rows(A)-1
-    % Aplica pivoteo solo si no es matriz de diagonal dominante
     if diagonal_es_dominante == 0
       [A,L,v] = pivoteo_parcial(A,L,v,j,j);
     endif
     
     for i=j+1:rows(A)
-      m = A(i,j)/A(j,j); % Calculo el multiplicador
-      A(i,:) = A(i,:) - m*A(j,:);
+      multiplicador = A(i,j)/A(j,j);
+      A(i,:) = A(i,:) - multiplicador*A(j,:);
     endfor
-    
   endfor
+  
   resultado = A;
 endfunction
 
 % Realiza sustitucion inversa y devuelve un vector que contiene el valor de las incognitas
 %
-% A es la matriz ampliada A|b y es una matriz triangulada
+% A es la matriz ampliada A|b
 function resultado = sustitucion_inversa(A)
   soluciones = zeros(rows(A),1);
   
   for i=rows(A):-1:1
     suma = 0;
-    
+
+    % Reemplaza las incognitas conocidas y los paso al segundo miembro
     for j=i+1:columns(A)-1
-      if j ~= i % El valor de la columna i es el que tengo que dividir, no lo incluyo en la suma
+      if j ~= i
         suma = suma + A(i,j)*(-1)*soluciones(j);
       endif
     endfor
     
+    % Calcula el valor de la incognita y se guarda en el vector soluciones
     b = A(i,columns(A));
     soluciones(i) = (b + suma) / A(i,i);
   endfor
@@ -119,18 +123,23 @@ function resultado = sustitucion_inversa(A)
   resultado = soluciones;
 endfunction
 
+% Realiza sustitucion directa y devuelve un vector que contiene el valor de las incognitas
+%
+% A es la matriz ampliada A|b
 function resultado = sustitucion_directa(A)
   soluciones = zeros(rows(A),1);
   
   for i=1:rows(A)
     suma = 0;
     
+    % Reemplaza las incognitas conocidas y los paso al segundo miembro
     for j=1:i-1
-      if j ~= i % El valor de la columna i es el que tengo que dividir, no lo incluyo en la suma
+      if j ~= i
         suma = suma + A(i,j)*(-1)*soluciones(j);
       endif
     endfor
     
+    % Calcula el valor de la incognita y la guarda en el vector soluciones
     b = A(i,columns(A));
     soluciones(i) = (b + suma) / A(i,i);
   endfor
@@ -138,10 +147,12 @@ function resultado = sustitucion_directa(A)
   resultado = soluciones;
 endfunction
 
-function P = crear_matriz_permutacion(v,fil,col)
+% Crea la matriz de permutacion y la devuelve
+function P = crear_matriz_permutacion(vector_permutacion,fil,col)
   P = zeros(fil,col);
-  for i=1:columns(v)
-    P(i,v(i)) = 1;
+  
+  for i=1:columns(vector_permutacion)
+    P(i,vector_permutacion(i)) = 1;
   endfor
   
   P = P;
@@ -156,13 +167,14 @@ function [L,U,P] = factorizar(A)
   dimCol = columns(A);
   L = zeros(dimFil,dimCol);
   U = [];
-  v = [1:dimFil];
+  vector_permutacion = [1:dimFil];
   
   for j=1:dimCol-1
     if diagonal_es_dominante == 0
-      [A,L,v] = pivoteo_parcial(A,L,v,j,j,1);
+      [A,L,vector_permutacion] = pivoteo_parcial(A,L,vector_permutacion,j,j,1);
     endif
     
+    % Calcula el multiplicador y hace la resta de filas
     for i=j+1:dimFil
       multiplicador = A(i,j)/A(j,j);
       A(i,:) = A(i,:) - multiplicador*A(j,:);
@@ -171,11 +183,11 @@ function [L,U,P] = factorizar(A)
       L(i,j) = multiplicador;
     endfor
   endfor
-  L(rows(L),columns(L)) = 1;
+  L(rows(L),columns(L)) = 1; % Coloca el ultimo 1 que falta en la diagonal de L
   
   U = A;
   L = L;
-  P = crear_matriz_permutacion(v,dimFil,dimCol);
+  P = crear_matriz_permutacion(vector_permutacion,dimFil,dimCol);
 endfunction
 
 function resultado = resolver_con_gauss(A,F,G)
