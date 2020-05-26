@@ -216,7 +216,7 @@ A = [-cos(alpha) 0 cos(beta) 0 0 0;
      0 0 sin(beta) 0 0 1];
 
 % punto c)
-disp("EJERCICIO 3:\n");
+disp("EJERCICIO C:\n");
 t = cputime;
 resolver_con_gauss(A,1000,100);
 tiempo_gauss = cputime-t;
@@ -239,9 +239,11 @@ for i=1:10
   
   b = [-G; F; 0; 0; 0; 0];
   
+  % Resuelve Ly=Pb
   L(:,7) = P*b;
   y = sustitucion_directa(L);
   
+  % Resuelve Ux=y
   U(:,7) = y;
   x = sustitucion_inversa(U);
   
