@@ -245,9 +245,9 @@ disp("\nEJERCICIO D:\n");
 matriz_con_soluciones = [];
 [L,U,P] = factorizar(A);
 
-for i=1:10
-  F = 1000*(1 + ((i-1)/10));
-  G = 100*(1 + ((i-1)/10));
+for i=0:9
+  F = 1000*(1 + (i/10));
+  G = 100*(1 + (i/10));
   
   b = [-G; F; 0; 0; 0; 0];
   
@@ -259,7 +259,7 @@ for i=1:10
   U(:,7) = y;
   x = sustitucion_inversa(U);
   
-  matriz_con_soluciones(:,i) = x;
+  matriz_con_soluciones(:,i+1) = x;
 endfor
 
 disp(matriz_con_soluciones);
