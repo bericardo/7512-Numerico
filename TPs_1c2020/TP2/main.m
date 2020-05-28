@@ -3,23 +3,29 @@ close all
 
 %--------------------------------FUNCIONES-------------------------------------%
 
-% Devuelve true si la diagonal es dominante, false en caso contrario.
-function resultado = es_diagonal_dominante(A_ampliada)
-  dim_fil = rows(A_ampliada);
-  dim_col = columns(A_ampliada);
+% ES_DIAGONAL_DOMINANTE Devuelve true si la diagonal es dominante, false en caso 
+% contrario.
+%
+% A - matriz A. Podria ser la matriz ampliada.
+function resultado = es_diagonal_dominante(A)
+  dim_fil = rows(A);
+  dim_col = columns(A);
   diagonal_es_dominante = true;
   
   for i=1:dim_fil
-    valor_diagonal = abs(A_ampliada(i,i));
+    valor_diagonal = abs(A(i,i));
     suma = 0;
     
-    % Suma el modulo de los valores de la fila i excepto el de la diagonal
-    for j=1:dim_col-1
+    % Suma todos los valores de la fila i en valor absoluto sin incluir el valor
+    % de la diagonal
+    for j=1:dim_col-1 % el termino independiente no se incluye en la suma
       if (j != i)
-        suma = suma + abs(A_ampliada(i,j));
+        suma = suma + abs(A(i,j));
       endif
     endfor
     
+    % Si el valor de la diagonal es menor a la suma entonces la matriz no es
+    % diagonal dominante.
     if (suma > valor_diagonal)
       diagonal_es_dominante = false;
       break;
@@ -28,6 +34,15 @@ function resultado = es_diagonal_dominante(A_ampliada)
   resultado = diagonal_es_dominante;
 endfunction
 
+% PIVOTEO_PARCIAL aplica pivoteo parcial a la matriz A.
+%
+% A - matriz A. A podria ser la matriz ampliada.
+% L - matriz L de la descomposicion LU.
+% vector_permutacion - almacena los cambios de filas que se realizan.
+% fila - indice de la fila en la que se encuentra el pivote
+% columna - indice de la columna en la que se encuentra el pivote
+% lu - es 0 si la funcion pivoteo_parcial se llama desde la funcion triangular,
+%      es 1 si se llama desde la funcion factorizar.
 function [A,L,v] = pivoteo_parcial(A, L, vector_permutacion, fila, columna, lu=0)
   dim_fila = rows(A);
   pivote = abs(A(fila,columna));
@@ -42,12 +57,17 @@ function [A,L,v] = pivoteo_parcial(A, L, vector_permutacion, fila, columna, lu=0
     endif  
   endfor
   
-  % Intercambia las filas si el nuevo pivote no es el pivote actual
+  % Intercambia las filas si el nuevo pivote no es el pivote actual. 
+  % Se permuta la fila "fila" por la "fila_pos_max".
   if (fila_pos_max != fila && fila_pos_max != 0)
+    
+    % Permuta filas del vector permutacion
     vector_permutacion([fila fila_pos_max]) = vector_permutacion([fila_pos_max fila]);
     
+    %Permuta filas de la matriz A
     A([fila fila_pos_max],:) = A([fila_pos_max fila],:);
     
+    % Permuta filas del vector L si corresponde
     if (lu == 1) 
       L([fila fila_pos_max],:) = L([fila_pos_max fila],:);
     endif
@@ -57,29 +77,35 @@ function [A,L,v] = pivoteo_parcial(A, L, vector_permutacion, fila, columna, lu=0
   v = vector_permutacion;
 endfunction
 
-% Triangula la matriz A usando metodo de eliminacion de gauss y devuele la matriz
-function resultado = triangular(A_ampliada)
+% TRIANGULAR triangula la matriz A usando metodo de eliminacion de gauss
+%
+% A_ampliada - es la matriz ampliada A|b
+function A_triangulada = triangular(A_ampliada)
   diagonal_es_dominante = es_diagonal_dominante(A_ampliada);
   v = [1:rows(A_ampliada)];
   L = [];
   
   for j=1:rows(A_ampliada)-1
+    % Si A es diagonal dominante no se aplica la permutacion
     if (diagonal_es_dominante == 0)
       [A_ampliada,L,v] = pivoteo_parcial(A_ampliada,L,v,j,j);
     endif
     
+    % Calcula el multiplicador y realiza la resta de las filas
     for i=j+1:rows(A_ampliada)
       multiplicador = A_ampliada(i,j)/A_ampliada(j,j);
       A_ampliada(i,:) = A_ampliada(i,:) - multiplicador*A_ampliada(j,:);
     endfor
   endfor
-  resultado = A_ampliada;
+  A_triangulada = A_ampliada;
 endfunction
 
-% Realiza sustitucion inversa y devuelve un vector que contiene el valor de las incognitas
+% SUSTITUCION_INVERSA realiza sustitucion inversa y devuelve un vector que 
+% contiene el valor de las incognitas.
 %
-% A es la matriz ampliada A|b
-function resultado = sustitucion_inversa(A_ampliada)
+% A - es la matriz ampliada A|b. Debe estar triangulada superiormente, es decir
+%     con cero debajo de la diagonal.
+function vector_soluciones = sustitucion_inversa(A_ampliada)
   soluciones = zeros(rows(A_ampliada),1);
   
   for i=rows(A_ampliada):-1:1
@@ -96,11 +122,15 @@ function resultado = sustitucion_inversa(A_ampliada)
     b = A_ampliada(i,columns(A_ampliada));
     soluciones(i) = (b + suma) / A_ampliada(i,i);
   endfor
-  resultado = soluciones;
+  vector_soluciones = soluciones;
 endfunction
 
-% Realiza sustitucion directa y devuelve un vector que contiene el valor de las incognitas
-function resultado = sustitucion_directa(A_ampliada)
+% SUSTITUCION_DIRECTA realiza sustitucion directa y devuelve un vector que 
+% contiene el valor de las incognitas
+%
+% A_ampliada - es la matriz A|b. A debe estar triangulada inferiormente, esto es
+%              con cero por encima de la diagonal.
+function vector_soluciones = sustitucion_directa(A_ampliada)
   soluciones = zeros(rows(A_ampliada),1);
   
   for i=1:rows(A_ampliada)
@@ -118,10 +148,13 @@ function resultado = sustitucion_directa(A_ampliada)
     soluciones(i) = (b + suma) / A_ampliada(i,i);
   endfor
 
-  resultado = soluciones;
+  vector_soluciones = soluciones;
 endfunction
 
-% Crea la matriz de permutacion y la devuelve
+% CREAR_MATRIZ_PERMUTACION crea la matriz de permutacion y la devuelve
+%
+% vetor_permutacion - contiene la permutacion de filas que se hizo durante el
+%                     pivoteo parcial.
 function P = crear_matriz_permutacion(vector_permutacion,dim_fil,dim_col)
   P = zeros(dim_fil,dim_col);
   
@@ -132,9 +165,12 @@ function P = crear_matriz_permutacion(vector_permutacion,dim_fil,dim_col)
   P = P;
 endfunction
 
-% Realiza la factorizacion LU y devuelve dos matrices: L y U
+% FACTORIZAR realiza la factorizacion LU y devuelve tres(3) matrices: L,U y P 
+% L es una matriz triangular inferior
+% U es una matriz triangular superior
+% P es la matri de permutacion
 %
-% A es solo la matriz A, no es la matriz ampliada
+% A - es la matriz A, no es la matriz ampliada.
 function [L,U,P] = factorizar(A)
   diagonal_es_dominante = es_diagonal_dominante(A);
   dim_fil = rows(A);
@@ -144,6 +180,7 @@ function [L,U,P] = factorizar(A)
   vector_permutacion = [1:dim_fil];
   
   for j=1:dim_col-1
+    % Si A es diagonal dominante no es necesario aplicar el pivoteo
     if (diagonal_es_dominante == 0)
       [A,L,vector_permutacion] = pivoteo_parcial(A,L,vector_permutacion,j,j,1);
     endif
