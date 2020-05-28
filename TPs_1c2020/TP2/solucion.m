@@ -4,21 +4,19 @@ close all
 %--------------------------------FUNCIONES-------------------------------------%
 
 % Devuelve true si la diagonal es dominante, false en caso contrario.
-%
-% A es la matriz ampliada A|b
-function resultado = es_diagonal_dominante(A)
-  dim_fil = rows(A);
-  dim_col = columns(A);
+function resultado = es_diagonal_dominante(A_ampliada)
+  dim_fil = rows(A_ampliada);
+  dim_col = columns(A_ampliada);
   diagonal_es_dominante = true;
   
   for i=1:dim_fil
-    valor_diagonal = abs(A(i,i));
+    valor_diagonal = abs(A_ampliada(i,i));
     suma = 0;
     
     % Suma el modulo de los valores de la fila i excepto el de la diagonal
     for j=1:dim_col-1
       if (j != i)
-        suma = suma + abs(A(i,j));
+        suma = suma + abs(A_ampliada(i,j));
       endif
     endfor
     
@@ -27,17 +25,10 @@ function resultado = es_diagonal_dominante(A)
       break;
     endif
   endfor
-  
   resultado = diagonal_es_dominante;
 endfunction
 
-% Aplica pivoteo parcial a la matriz A y devuelve la matriz
-%
-% A es la matriz ampliada A|b a la cual se le aplica el pivoteo
-% fila es el indice de la fila en la que esta el pivote
-% columna es el indice de la columna en la que esta el pivote
-% factorizacion es 1 si se esta haciendo una descomposicion, 0 si es una triangulacion
-function [A,L,v] = pivoteo_parcial(A, L, vector_permutacion, fila, columna,factorizacion=0)
+function [A,L,v] = pivoteo_parcial(A, L, vector_permutacion, fila, columna, lu=0)
   dim_fila = rows(A);
   pivote = abs(A(fila,columna));
   fila_pos_max = 0;
@@ -53,96 +44,86 @@ function [A,L,v] = pivoteo_parcial(A, L, vector_permutacion, fila, columna,facto
   
   % Intercambia las filas si el nuevo pivote no es el pivote actual
   if (fila_pos_max != fila && fila_pos_max != 0)
-    % Permuta filas del vector permutacion
     vector_permutacion([fila fila_pos_max]) = vector_permutacion([fila_pos_max fila]);
     
-    % Permuta filas de la matriz A
     A([fila fila_pos_max],:) = A([fila_pos_max fila],:);
     
-    % Permuta filas de L
-    if (factorizacion == 1)
+    if (lu == 1) 
       L([fila fila_pos_max],:) = L([fila_pos_max fila],:);
     endif
   endif
-  
   A = A;
   L = L;
   v = vector_permutacion;
 endfunction
 
 % Triangula la matriz A usando metodo de eliminacion de gauss y devuele la matriz
-%
-% A es la matriz ampliada A|b
-function resultado = triangular(A)
-  diagonal_es_dominante = es_diagonal_dominante(A);
-  v = [1:rows(A)];
+function resultado = triangular(A_ampliada)
+  diagonal_es_dominante = es_diagonal_dominante(A_ampliada);
+  v = [1:rows(A_ampliada)];
   L = [];
   
-  for j=1:rows(A)-1
+  for j=1:rows(A_ampliada)-1
     if (diagonal_es_dominante == 0)
-      [A,L,v] = pivoteo_parcial(A,L,v,j,j);
+      [A_ampliada,L,v] = pivoteo_parcial(A_ampliada,L,v,j,j);
     endif
     
-    for i=j+1:rows(A)
-      multiplicador = A(i,j)/A(j,j);
-      A(i,:) = A(i,:) - multiplicador*A(j,:);
+    for i=j+1:rows(A_ampliada)
+      multiplicador = A_ampliada(i,j)/A_ampliada(j,j);
+      A_ampliada(i,:) = A_ampliada(i,:) - multiplicador*A_ampliada(j,:);
     endfor
   endfor
-  
-  resultado = A;
+  resultado = A_ampliada;
 endfunction
 
 % Realiza sustitucion inversa y devuelve un vector que contiene el valor de las incognitas
 %
 % A es la matriz ampliada A|b
-function resultado = sustitucion_inversa(A)
-  soluciones = zeros(rows(A),1);
+function resultado = sustitucion_inversa(A_ampliada)
+  soluciones = zeros(rows(A_ampliada),1);
   
-  for i=rows(A):-1:1
+  for i=rows(A_ampliada):-1:1
     suma = 0;
 
     % Reemplaza las incognitas conocidas y los paso al segundo miembro
-    for j=i+1:columns(A)-1
+    for j=i+1:columns(A_ampliada)-1
       if (j != i)
-        suma = suma + A(i,j)*(-1)*soluciones(j);
+        suma = suma + A_ampliada(i,j)*(-1)*soluciones(j);
       endif
     endfor
     
     % Calcula el valor de la incognita y se guarda en el vector soluciones
-    b = A(i,columns(A));
-    soluciones(i) = (b + suma) / A(i,i);
+    b = A_ampliada(i,columns(A_ampliada));
+    soluciones(i) = (b + suma) / A_ampliada(i,i);
   endfor
-
   resultado = soluciones;
 endfunction
 
 % Realiza sustitucion directa y devuelve un vector que contiene el valor de las incognitas
-%
-% A es la matriz ampliada A|b
-function resultado = sustitucion_directa(A)
-  soluciones = zeros(rows(A),1);
+function resultado = sustitucion_directa(A_ampliada)
+  soluciones = zeros(rows(A_ampliada),1);
   
-  for i=1:rows(A)
+  for i=1:rows(A_ampliada)
     suma = 0;
     
     % Reemplaza las incognitas conocidas y los paso al segundo miembro
     for j=1:i-1
       if (j != i)
-        suma = suma + A(i,j)*(-1)*soluciones(j);
+        suma = suma + A_ampliada(i,j)*(-1)*soluciones(j);
       endif
     endfor
     
     % Calcula el valor de la incognita y la guarda en el vector soluciones
-    b = A(i,columns(A));
-    soluciones(i) = (b + suma) / A(i,i);
+    b = A_ampliada(i,columns(A_ampliada));
+    soluciones(i) = (b + suma) / A_ampliada(i,i);
   endfor
 
   resultado = soluciones;
 endfunction
 
 % Crea la matriz de permutacion y la devuelve
-function P = crear_matriz_permutacion(vector_permutacion,dimension_fila_matriz,dimension_col_matriz)
-  P = zeros(dimension_fila_matriz,dimension_col_matriz);
+function P = crear_matriz_permutacion(vector_permutacion,dim_fil,dim_col)
+  P = zeros(dim_fil,dim_col);
   
   for i=1:columns(vector_permutacion)
     P(i,vector_permutacion(i)) = 1;
@@ -183,51 +164,44 @@ function [L,U,P] = factorizar(A)
   P = crear_matriz_permutacion(vector_permutacion,dim_fil,dim_col);
 endfunction
 
-function resultado = resolver_con_gauss(A,F,G)
-  b = [-G; F; 0; 0; 0; 0];
-  
-  A(:,columns(A)+1) = b;
-  
-  A_triangulada = triangular(A);
-  x = sustitucion_inversa(A_triangulada);
-  
-  resultado=x;
-endfunction
-
-function resultado = resolver_con_descomposicion(A,F,G)
-  b = [-G; F; 0; 0; 0; 0];
-  
-  [L,U,P] = factorizar(A);
-  
-  L(:,columns(L)+1) = P*b;
-  y = sustitucion_directa(L);
-  
-  U(:,columns(U)+1) = y;
-  x = sustitucion_inversa(U);
-  
-  resultado = x;
-endfunction
-
 %--------------------------------PRINCIPAL-------------------------------------%
 
-alpha = (53*pi)/180;
-beta = (37*pi)/180;
+% Convierte los grados 53 y 37 a radianes
+ALPHA = (53*pi)/180;
+BETA = (37*pi)/180;
 
-A = [-cos(alpha) 0 cos(beta) 0 0 0;
-     -sin(alpha) 0 -sin(beta) 0 0 0;
-     cos(alpha) 1 0 1 0 0;
-     sin(alpha) 0 0 0 1 0;
-     0 -1 -cos(beta) 0 0 0 ;
-     0 0 sin(beta) 0 0 1];
+A = [-cos(ALPHA) 0 cos(BETA) 0 0 0;
+     -sin(ALPHA) 0 -sin(BETA) 0 0 0;
+     cos(ALPHA) 1 0 1 0 0;
+     sin(ALPHA) 0 0 0 1 0;
+     0 -1 -cos(BETA) 0 0 0 ;
+     0 0 sin(BETA) 0 0 1];
 
 % punto c)
 disp("EJERCICIO C:\n");
+
+F = 1000;
+G = 100;
+b = [-G; F; 0; 0; 0; 0];
+
+% Resuelve utilizando gauss
 t = cputime;
-resolver_con_gauss(A,1000,100);
+A(:,7) = b; # Agrega el vector b a la columna 7 de la matriz A para formar la matriz ampliada A|b
+A_triangulada = triangular(A);
+x = sustitucion_inversa(A_triangulada);
 tiempo_gauss = cputime-t;
 
+% Resuelve utilizando descomposicion LU
 t = cputime;
-resolver_con_descomposicion(A,1000,100);
+[L,U,P] = factorizar(A(:,1:6)); % factorizar recibe la matriz no-ampliada entonces le quito la ultima columna
+
+% Resuelve Ly=Pb
+L(:,7) = P*b; % Agrega el vector P*b en la columna 7 de L. O sea, es la matriz ampliada L|P*b
+y = sustitucion_directa(L);
+
+% Resuelve Ux=y
+U(:,7) = y; % Analogamente, es la matriz ampliada U|y
+x = sustitucion_inversa(U);
 tiempo_lu = cputime-t;
 
 printf('Eliminacion de Gauss tardo: %f segundos\n', tiempo_gauss);
@@ -235,8 +209,9 @@ printf('Descomposicion LU tardo: %f segundos\n', tiempo_lu);
 
 % punto d)
 disp("\nEJERCICIO D:\n");
+
 matriz_con_soluciones = [];
-[L,U,P] = factorizar(A);
+[L,U,P] = factorizar(A(:,1:6)); % Como factorizar recibe la matriz A y no la ampliada A|b, le quito b.
 
 for i=0:9
   F = 1000*(1 + (i/10));
@@ -254,5 +229,4 @@ for i=0:9
   
   matriz_con_soluciones(:,i+1) = x;
 endfor
-
 disp(matriz_con_soluciones);
