@@ -30,5 +30,5 @@ nuevoPeriodo = recortar_periodo(matrizMinimosAnuales, 1975,2020);
 
 % Ordena de menor a mayor por niveles hidrometricos
 periodoOrdenado = ordenar_matriz(nuevoPeriodo);
-#Exportar datos como archivo .csv
+% Exporta datos como archivo .csv
 dlmwrite('ranking_5_principales_bajantes.csv', periodoOrdenado); 

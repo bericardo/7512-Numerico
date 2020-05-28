@@ -27,5 +27,5 @@ function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   % Tamaño de letra de los n
   set(gca,'fontsize',20); % sets font of numbers on axes
   
-  %print -djpg serie_minimos_anuales.jpg
+  print -djpg grafico.jpg
 endfunction
