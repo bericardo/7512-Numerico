@@ -5,11 +5,13 @@
 % Para los meses que tienen menos de 31 dias, se duplicó el dato del último día
 % para completar los 31 días.
 
+1;
+
 clear all
 close all
 
 % Cargamos los datos
-dato = load("datos_para_graficar_ranking_bajantes.csv");
+dato = load("datos_ranking.csv");
 fechas = [1:31];
 
 hold on
