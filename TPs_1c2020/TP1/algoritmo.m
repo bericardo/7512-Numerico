@@ -64,7 +64,7 @@ function resultado = minimos_anuales(datos)
   i = 1;
   j = 1;
   
-  while i <= dimension
+  while (i <= dimension)
     anio = datos(i,3);
     mes = datos(i,2);
     dia = datos(i,1);
@@ -105,7 +105,7 @@ function resultado = minimos_mensuales(datos)
 
     % Busca minimo del mes
     while i <= dimension && datos(i,2) == mes
-      if datos(i,4) < minimo_mensual
+      if (datos(i,4) < minimo_mensual)
         minimo_mensual = datos(i,4);
         mes = datos(i,2);
         dia = datos(i,1);
@@ -115,7 +115,7 @@ function resultado = minimos_mensuales(datos)
     endwhile
     
     % Termina el programa cuando llego a abril 2020 ya esta incompleto este mes.
-    if anio == 2020 && mes == 4
+    if (anio == 2020 && mes == 4)
       break;
     endif
     
@@ -134,7 +134,7 @@ function resultado = obtener_mes_minimo(datos)
   i = 1;
   
   while i <= dimension    
-    if datos(i,4) < minimo
+    if (datos(i,4) < minimo)
       minimo = datos(i,4);
       vectorConMinimo = datos(i,:);
     endif
@@ -151,7 +151,7 @@ function resultado = recortar_periodo(datos,desdeAnio,hastaAnio)
   j = 1;
   
   for i=1:rows(datos)
-    if (datos(i,3) >= desdeAnio) && (datos(i,3) <= hastaAnio)
+    if ((datos(i,3) >= desdeAnio) && (datos(i,3) <= hastaAnio))
       nuevosDatos(j,:) = datos(i,:);
       j = j + 1;
     endif
@@ -169,10 +169,9 @@ function resultado = ordenarMatriz(datos)
   while i < dimension
     j = i + 1;
     while j <= dimension
-      if datos(j,4) < datos(i,4)
-        vector_auxiliar = datos(i,:);
-        datos(i,:) = datos(j,:);
-        datos(j,:) = vector_auxiliar;        
+
+      if (datos(j,4) < datos(i,4))
+        datos([i j],:) = datos([j i],:);  
       endif
       
       j = j + 1;
