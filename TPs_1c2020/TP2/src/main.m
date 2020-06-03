@@ -205,7 +205,7 @@ endfunction
 
 function resultado = graficar_fuerza(matriz,titulo,grafico_numero)
   % Graficador
-  imagesc([-190 -100], [1000 1900], matriz);
+  imagesc([100 190], [1000 1900], matriz);
   colorbar();
   
   % Título
