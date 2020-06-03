@@ -1,8 +1,6 @@
 % vectorFechas: es un vector con fechas
 % vectorNivelesHidrometricos: es un vector con los niveles hidrometricos
 % titulo: es el titulo que va a tener el grafico
-%
-% Hace el grafico
 function resultado = graficar(vectorFechas, vectorNivelesHidrometricos, titulo)
   % Lista de elementos a graficar
   legend_list = {"Nivel Hidrometrico"};
