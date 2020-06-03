@@ -17,7 +17,7 @@ A(2,7:14) = F;
 % la 4 de N23 y la 5 de N13.
 soluciones = [];
 soluciones(:,1) = transpose(F);
-soluciones(:,2) = (-1)*transpose(G);
+soluciones(:,2) = transpose(G);
 
 A_triangulada = triangular(A);    % Triangula una matriz de 14 columnas
 A = A_triangulada(:,1:6);
