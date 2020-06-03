@@ -8,8 +8,8 @@ F = [800 1000 1200 800 1000 1200 80 1000];
 G = [90 100 110 100 110 90 110 90];
 
 % Arma la matriz ampliada de A
-A(1,7:14) = F;
-A(2,7:14) = (-1)*G;
+A(1,7:14) = (-1)*G;
+A(2,7:14) = F;
 
 % La primera columna de esta matriz llamada soluciones son los valores de F, la 
 % segunda columna son los valores de G. Las 3 columnas restantes son las fuerzas 
@@ -17,7 +17,7 @@ A(2,7:14) = (-1)*G;
 % la 4 de N23 y la 5 de N13.
 soluciones = [];
 soluciones(:,1) = transpose(F);
-soluciones(:,2) = transpose(G);
+soluciones(:,2) = (-1)*transpose(G);
 
 A_triangulada = triangular(A);    % Triangula una matriz de 14 columnas
 A = A_triangulada(:,1:6);
