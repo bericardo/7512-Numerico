@@ -36,15 +36,15 @@ endfor
 % Calculamos las perturbaciones
 error_n12_f_fijo = abs( (soluciones(4,3) - soluciones(1,3)) / (soluciones(4,2) - soluciones(1,2)) );
 error_n12_g_fijo = abs( (soluciones(5,3)-soluciones(3,3)) / (soluciones(5,1) - soluciones(3,1)) );
-error_n12 = round(error_n12_g_fijo*200 + error_n12_f_fijo*100) % Calcula el error absoluto
+error_n12 = round(error_n12_g_fijo*200 + error_n12_f_fijo*10) % Calcula el error absoluto
 
 error_n23_f_fijo = abs( (soluciones(4,4) - soluciones(1,4)) / (soluciones(4,2) - soluciones(1,2)) );
 error_n23_g_fijo = abs( (soluciones(5,4)-soluciones(3,4)) / (soluciones(5,1) - soluciones(3,1)) );
-error_n23 = round(error_n23_g_fijo*200 + error_n23_f_fijo*100) % Calcula el error absoluto
+error_n23 = round(error_n23_g_fijo*200 + error_n23_f_fijo*10) % Calcula el error absoluto
 
 error_n13_f_fijo = abs( (soluciones(4,5) - soluciones(1,5)) / (soluciones(4,2) - soluciones(1,2)) );
 error_n13_g_fijo = abs( (soluciones(5,5)-soluciones(3,5)) / (soluciones(5,1) - soluciones(3,1)) );
-error_n13 = round(error_n13_g_fijo*200 + error_n13_f_fijo*100) % Calcula el error absoluto
+error_n13 = round(error_n13_g_fijo*200 + error_n13_f_fijo*10) % Calcula el error absoluto
 
 % Exporta datos a un archivo .csv para poder armar la tabla
 csvwrite ("punto_e_tabla.csv",soluciones);
