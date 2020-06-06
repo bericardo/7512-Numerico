@@ -1,9 +1,4 @@
-%%Se define la matriz A donde las primeras tres filas corresponden a las
-%ecuaciones de las fuerzas N12, N23 y N13. Las ecuaciones restantes corresponden
-%a las reacciones R
-clear all;
-close all;
-1;
+clear all; close all; 1;
 
 % Convierte los grados 53 y 37 a radianes
 ALPHA = (53*pi)/180;
