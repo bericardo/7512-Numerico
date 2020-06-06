@@ -1,7 +1,11 @@
-% datos: matriz con los datos tal cual los cargamos desde el inicio del programa
-%
-% Devuelve un vector con las fechas transformadas de manera que pueda ser ploteada
 function resultado = convertir_fechas(datos)
+%%CONVERTIR_FECHAS guarda todas las fechas que aparecen en la matriz datos
+%utilizando la funcion datenum que provee octave.
+%  CONVERTIR_FECHAS(DATOS) Devuelve un vector de Nx1 que contiene las fechas de
+%  todas las medicioes de niveles hidrometricos de manera que luego puedan ser
+%  graficadas.
+%  datos - matriz que contiene los niveles hidrometricos medidos. Esta matriz
+%  tiene tres columnas: dia, mes, año y nivel hidrometrico.
   vectorFechas = [];
   
   for i=1:rows(datos)

@@ -1,27 +1,21 @@
-% Este codigo corresponde al gráfico llamado "Ranking 5 1975-2020 - FIUBA 75.12"
-%
-% Los datos para graficar estos datos se armo manualmente. Se copió los 31 dias
-% de cada mes que aparece en el ranking en un archivo .csv y se los ploteó. 
-% Para los meses que tienen menos de 31 dias, se duplicó el dato del último día
-% para completar los 31 días.
-
-1;
-
+%%Este codigo realiza un grafico nivel hidrometrico-dia de los 5 meses  en los
+%cuales el Rio Parana tuvo las mayores bajantes/los menores niveles hidrometri-
+%cos.
 clear all
 close all
+1;
 
 % Cargamos los datos
 dato = load("datos_ranking.csv");
 fechas = [1:31];
 
-hold on
 % Graficador
+hold on
 plot(fechas,dato(1:31,4));
 plot(fechas,dato(32:62,4));
 plot(fechas,dato(63:93,4));
 plot(fechas,dato(94:124,4));
 plot(fechas,dato(125:155,4));
-
 hold off
 
 % Titulo y legendas
