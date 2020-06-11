@@ -7,8 +7,8 @@ function resultado = graficar_fuerza(matriz,titulo,grafico_numero)
   title(titulo);
 
   % Rótulos de ejes
-  xlabel("Fuerza G",'fontsize',10)
-  ylabel("Fuerza F",'fontsize',14)
+  xlabel("Fuerza G(N)",'fontsize',10)
+  ylabel("Fuerza F(N)",'fontsize',14)
   
   % Tamaño de letra de los n
   set(gca,'fontsize',20); % sets font of numbers on axes
