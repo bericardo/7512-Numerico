@@ -14,11 +14,7 @@ function tabla_resultados = newton_raphson_f(semilla,cantidad_interaciones)
     Er = E/abs(x_sig);
     
     #Guarda datos en la tabla
-    tabla(n,1) = n-1;
-    tabla(n,2) = x_ant;
-    tabla(n,3) = x_sig;
-    tabla(n,4) = E;
-    tabla(n,5) = Er;
+    tabla(n,:) = [n-1 x_ant x_sig E Er 0];
     
     #Calcula orden de convergencia
     if n >=3
