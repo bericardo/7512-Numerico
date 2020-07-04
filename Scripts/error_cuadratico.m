@@ -6,7 +6,7 @@ function res = f (x)
 endfunction
 
 #Calcula error cuadratico
-function sum = sumatoria (feval, x, y, n=1)
+function sum = error_cuadratico_sum (feval, x, y, n=1)
   if (n == columns (x))
     sum = ( feval(x(n)) - y(n) ).^2;
   else
@@ -16,4 +16,4 @@ endfunction
 
 #Muestra resultado
 disp ('ERROR CUADRATICO');
-disp (sumatoria (@f, x, y));
+disp (error_cuadratico_sum (@f, x, y));

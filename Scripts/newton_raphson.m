@@ -26,10 +26,10 @@ function tabla_resultados = newton_raphson_rm(semilla,cantidad_interaciones)
     x_sig = x_ant - ( f(x_ant)*f_diff(x_ant) )./( ((f_diff(x_ant)).^2)-(f(x_ant).*f_diff2(x_ant)) );
     
     #Error absoluto y relativo
-    E = abs(x_sig - x_ant);
-    Er = E/abs(x_sig);
+    error_abs = abs(x_sig - x_ant);
+    error_rel = error_abs/abs(x_sig);
     
-    tabla(n,:) = [n-1 x_ant x_sig E Er 0];
+    tabla(n,:) = [n-1 x_ant x_sig error_abs error_rel 0];
     
     #Calcula orden de convergencia p
     if n >=3
@@ -52,10 +52,10 @@ function tabla_resultados = newton_raphson_f(semilla,cantidad_interaciones)
     #Formula de Newton-Raphson
     x_sig = x_ant - (f(x_ant)/f_diff(x_ant));
 
-    E = abs(x_sig - x_ant);
-    Er = E/abs(x_sig);
+    error_abs = abs(x_sig - x_ant);
+    error_rel = error_abs/abs(x_sig);
     
-    tabla(n,:) = [n-1 x_ant x_sig E Er 0];
+    tabla(n,:) = [n-1 x_ant x_sig error_abs error_rel 0];
     
     if n >=3
       E_k = tabla(n-1,4);
@@ -68,17 +68,17 @@ function tabla_resultados = newton_raphson_f(semilla,cantidad_interaciones)
   tabla_resultados = tabla;
 endfunction
 
-function res = graficar_rectas_tangentes(datos,rango,intervalo)
+function res = graficar_rectas_tangentes(datos,rango,z)
   hold on;
   for i=1:rango
     #Datos de recta tangente y = mx + b
     x = datos(i,2);
     m = f_diff(x);
-    b = (-1)*m*x + f(x);
+    b = (-1)*m*x + f(x)
     
     #Grafica rectas tangentes
-    plot([x x],[f(x) 0]); #Traza recta vertical donde corta la tangente con abscisa
-    plot(intervalo,m*intervalo + b');
+    #plot([x x],[f(x) 0]); #Traza recta vertical donde corta la tangente con abscisa
+    plot(z,m*z + b);
   endfor
   hold off;
 endfunction
@@ -96,7 +96,7 @@ graficar_rectas_tangentes(tabla_soluciones,cant_iter,x);
 
 #Muestra tabla con soluciones por consola
 disp('------------------------------------------------------------');
-disp('     iter    |   x   |  f(x)   |    E    |    Er   |    p');
+disp('     iter    |   x   |  f(x)   | err_abs | err_rel |   p');
 disp('------------------------------------------------------------');
 disp(tabla_soluciones);
 disp('------------------------------------------------------------');
