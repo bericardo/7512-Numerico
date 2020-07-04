@@ -3,41 +3,50 @@ close all;
 1;
 
 function y = f(x)
-  y = ((x.^2) / 4) - sin(x);
+  y = (x.^3) - (7.*(x.^2)) + (14.*x) - 6.0;
 endfunction
 
-function nro_iteraciones = biseccion_t(a,b,tol,nro_iter=0)
+function tabla_soluciones = biseccion_t(a,b,tolerancia,sol,nro_iter=0)
   m = (a+b)/2;
   err_abs = abs((b-a)/2);
   f_a = f(a);
   f_b = f(m);
   
-  if (err_abs > tol)
-    nro_iter += 1;
+  sol(nro_iter+1,:) = [nro_iter a b m err_abs];
+  
+  if (err_abs > tolerancia)
     if (f_a*f_b < 0)
-      nro_iter = biseccion_t(a,m,tol,nro_iter);
+      sol = biseccion_t(a,m,tolerancia,sol,nro_iter+1);
     else
-      nro_iter = biseccion_t(m,b,tol,nro_iter);
+      sol = biseccion_t(m,b,tolerancia,sol,nro_iter+1);
     endif
   endif
-  nro_iteraciones = nro_iter;
+  tabla_soluciones = sol;
 endfunction
 
-function error_absoluto = biseccion_c(a,b,cant_iter,nro_iter=0)
+function tabla_soluciones = biseccion_c(a,b,cant_iter,sol,nro_iter=0)
   m = (a+b)/2;
   err_abs = abs((b-a)/2);
   f_a = f(a);
   f_b = f(m);
+  sol(nro_iter+1,:) = [nro_iter a b m err_abs];
   
   if (cant_iter ~= nro_iter)
-    nro_iter += 1;
     if (f_a*f_b < 0)
-      err_abs = biseccion_c(a,m,cant_iter,nro_iter);
+      sol = biseccion_c(a,m,cant_iter,sol,nro_iter+1);
     else
-      err_abs = biseccion_c(m,b,cant_iter,nro_iter);
+      sol = biseccion_c(m,b,cant_iter,sol,nro_iter+1);
     endif
   endif
-  error_absoluto = err_abs;
+  tabla_soluciones = sol;
 endfunction
 
-disp(biseccion_c(1,2,16));
+t_soluciones = [];
+t_soluciones = biseccion_c(0,1,5,t_soluciones);
+
+%Muestra tabla con resultados
+disp('-------------------------------------------------------');
+disp('     iter  |    a    |   b     |    m     |    E')
+disp('-------------------------------------------------------');
+disp(t_soluciones);
+disp('-------------------------------------------------------');

@@ -2,25 +2,67 @@ clear all;
 close all;
 1;
 
-function tabla_resultados = newton_raphson_f(semilla,cantidad_interaciones)
+#f(x)
+function x_sig = f(x_ant)
+  x_sig = 1.5 - log(1 + (x_ant.^2));
+endfunction
+#f'(x)
+function x_sig = f_diff(x_ant)
+  x_sig = - (2.*x_ant) ./ (1 + (x_ant.^2));
+endfunction
+
+#f''(x) - Usada para newton-raphson raices multiples
+function x_sig = f_diff2(x_ant)
+  x_sig = ( 2*(1+(x_ant.^2)) - (4.*x_ant) )./((1+(x_ant.^2)).^2);
+endfunction
+
+#Newton-Raphson Raices Multiples o Newton-Raphson Modificado
+function tabla_resultados = newton_raphson_rm(semilla,cantidad_interaciones)
   tabla = [];
   x_ant = semilla;
+  
   for n=1:cantidad_interaciones
-    #Calcula termino n+1
-    x_sig = x_ant - (f(x_ant)/f_diff(x_ant));
+    #Formula de Newton-Raphson Raices Multiples
+    x_sig = x_ant - ( f(x_ant)*f_diff(x_ant) )./( ((f_diff(x_ant)).^2)-(f(x_ant).*f_diff2(x_ant)) );
     
-    #Calcula error absoluto y relativo
+    #Error absoluto y relativo
     E = abs(x_sig - x_ant);
     Er = E/abs(x_sig);
     
-    #Guarda datos en la tabla
     tabla(n,:) = [n-1 x_ant x_sig E Er 0];
     
-    #Calcula orden de convergencia
+    #Calcula orden de convergencia p
     if n >=3
-      tabla(n,6) = (log(tabla(n,4))-log(tabla(n-1,4)) )./( log(tabla(n-1,4))-log(tabla(n-2,4)) );
+      E_k = tabla(n-1,4);
+      E_k_next = tabla(n,4);
+      E_k_prev = tabla(n-2,4);
+      tabla(n,6) = (log(E_k_next)-log(E_k))./(log(E_k)-log(E_k_prev));
     endif
+    x_ant = x_sig;
+  endfor
+  tabla_resultados = tabla;
+endfunction
+
+#Newton-Raphson original
+function tabla_resultados = newton_raphson_f(semilla,cantidad_interaciones)
+  tabla = [];
+  x_ant = semilla;
+  
+  for n=1:cantidad_interaciones
+    #Formula de Newton-Raphson
+    x_sig = x_ant - (f(x_ant)/f_diff(x_ant));
+
+    E = abs(x_sig - x_ant);
+    Er = E/abs(x_sig);
     
+    tabla(n,:) = [n-1 x_ant x_sig E Er 0];
+    
+    if n >=3
+      E_k = tabla(n-1,4);
+      E_k_next = tabla(n,4);
+      E_k_prev = tabla(n-2,4);
+      tabla(n,6) = (log(E_k_next)-log(E_k))./(log(E_k)-log(E_k_prev));
+    endif
     x_ant = x_sig;
   endfor
   tabla_resultados = tabla;
@@ -29,41 +71,33 @@ endfunction
 function res = graficar_rectas_tangentes(datos,rango,intervalo)
   hold on;
   for i=1:rango
-    #Define datos para graficar recta tangente
+    #Datos de recta tangente y = mx + b
     x = datos(i,2);
     m = f_diff(x);
     b = (-1)*m*x + f(x);
     
-    #Grafica recta tangente y vertical en interseccion de abscisa y tangente
-    plot([x x],[f(x) 0]);
+    #Grafica rectas tangentes
+    plot([x x],[f(x) 0]); #Traza recta vertical donde corta la tangente con abscisa
     plot(intervalo,m*intervalo + b');
   endfor
   hold off;
 endfunction
 
-function x_sig = f(x_ant)
-  x_sig = (x_ant.^3) - x_ant - 4;
-endfunction
+#Datos
+cant_iter = 10;
+semilla = 0.5;
+x = 0:0.1:5;
 
-function x_sig = f_diff(x_ant)
-  x_sig = 3*(x_ant.^2) - 1;
-endfunction
+tabla_soluciones = newton_raphson_f(semilla, cant_iter);
 
-#Valores iniciales
-cantidad_de_iteraciones = 4;
-semilla = 2;
-
-#Grafica la funcion f(x)
-x = -2:0.1:5;
+#Graficador de funcion f(x) y rectas tangentes a la misma
 plot(x,f(x));
+graficar_rectas_tangentes(tabla_soluciones,cant_iter,x);
 
-tabla_resultados = newton_raphson_f(semilla, cantidad_de_iteraciones);
-graficar_rectas_tangentes(tabla_resultados,cantidad_de_iteraciones,x);
-
-#Muestra tabla con resultados
+#Muestra tabla con soluciones por consola
 disp('------------------------------------------------------------');
 disp('     iter    |   x   |  f(x)   |    E    |    Er   |    p');
 disp('------------------------------------------------------------');
-disp(tabla_resultados);
+disp(tabla_soluciones);
 disp('------------------------------------------------------------');
 disp('Fin del Programa.');

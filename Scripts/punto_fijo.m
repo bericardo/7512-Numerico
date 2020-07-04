@@ -6,29 +6,28 @@ function x_sig =  g(x_ant)
   x_sig = x_ant - sin(x_ant) + (sqrt(x_ant)/2);
 endfunction
 
-function tabla = punto_fijo_tol(semilla,tol)
+#Punto Fijo con una tolerancia
+function tabla_soluciones = punto_fijo_tol(semilla,tol)
   x_ant = semilla;
   x_sig = g(semilla);
+  
+  #Error absoluto y relativo
   E = abs(x_sig - x_ant);
   Er = E/abs(x_sig);
   
+  #Tabla para guardar calculos
   sol = [];
   sol(1,:) = [0 x_ant x_sig E Er 0]; 
-  sol(2,6) = 0;
-  n=2;
   
+  n=2; #Los nuevos valores calculados se guardan desde la fila 2 en adelante
   while tol < Er
     x_ant = sol(n-1,3);
     x_sig = g(x_ant);
     E = abs(x_sig - x_ant);
     Er = E/abs(x_sig);
+    sol(n,:) = [n-1 x_ant x_sig E Er 0];
     
-    sol(n,1) = n-1;
-    sol(n,2) = x_ant;
-    sol(n,3) = x_sig;
-    sol(n,4) = E;
-    sol(n,5) = Er;
-    
+    #Calcula orden de convergencia p y se guarda en la tabla
     if n >= 3
       E_k = sol(n-1,4);
       E_k_next = E;
@@ -38,30 +37,24 @@ function tabla = punto_fijo_tol(semilla,tol)
     endif
     n += 1;
   endwhile
-  tabla = sol;
+  tabla_soluciones = sol;
 endfunction
 
-function tabla = punto_fijo_iter(semilla,nro_iter)
+#Punto Fijo con una cantidad de iteraciones especifica
+function tabla_soluciones = punto_fijo_iter(semilla,nro_iter)
   x_ant = semilla;
   x_sig = g(semilla);
   E = abs(x_sig - x_ant);
   Er = E/abs(x_sig);
-  
   sol = [];
   sol(1,:) = [0 x_ant x_sig E Er 0];
-  sol(2,6) = 0;
 
   for n=2:nro_iter+1
     x_ant = sol(n-1,3);
     x_sig = g(x_ant);
     E = abs(x_sig - x_ant);
     Er = E/abs(x_sig);
-    
-    sol(n,1) = n-1;
-    sol(n,2) = x_ant;
-    sol(n,3) = x_sig;
-    sol(n,4) = E;
-    sol(n,5) = Er;
+    sol(n,:) = [n-1 x_ant x_sig E Er 0]; 
     
     if n >= 3
       E_k = sol(n-1,4);
@@ -71,7 +64,7 @@ function tabla = punto_fijo_iter(semilla,nro_iter)
       sol(n,6) = p;
     endif
   endfor
-  tabla = sol;
+  tabla_soluciones = sol;
 endfunction
 
 resultados = punto_fijo_iter(1,10);
@@ -81,4 +74,3 @@ disp('     iter    |   x   |  f(x)   |    E    |    Er   |    p');
 disp('------------------------------------------------------------');
 disp(resultados);
 disp('------------------------------------------------------------');
-disp('Fin del Programa.');
