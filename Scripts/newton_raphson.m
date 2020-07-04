@@ -77,7 +77,7 @@ function res = graficar_rectas_tangentes(datos,rango,z)
     b = (-1)*m*x + f(x)
     
     #Grafica rectas tangentes
-    #plot([x x],[f(x) 0]); #Traza recta vertical donde corta la tangente con abscisa
+    plot([x x],[f(x) 0]); #Traza recta vertical donde corta la tangente con abscisa
     plot(z,m*z + b);
   endfor
   hold off;
