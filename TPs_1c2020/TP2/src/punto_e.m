@@ -1,7 +1,6 @@
 clear all;
 close all;
-
-1; %Le decimos a octave que esto no es un function file
+1;
 main;
 
 F = [800 1000 1200 800 1000 1200 80 1000];
@@ -25,26 +24,25 @@ A = A_triangulada(:,1:6);
 % Resuelvo 8 sistemas Ax=b
 for i=1:8
   A(:,7) = A_triangulada(:,i+6);  % Arma la matriz ampliada Ax|b
-  x = sustitucion_inversa(A);     % Encuentra las soluciones
+  x = sustitucion_inversa(A);
   
-  % Guardo las soluciones
-  soluciones(i,3) = x(1);         % Guarda la fuerza N12
-  soluciones(i,4) = x(2);         % Guarda la fuerza N23
-  soluciones(i,5) = x(3);         % Guarda la fuerza N13
+  % Guarda soluciones N12, N23, N13
+  soluciones(i,3) = x(1);
+  soluciones(i,4) = x(2);
+  soluciones(i,5) = x(3);
 endfor
 
-% Calculamos las perturbaciones
+% Calcula las perturbaciones
 error_n12_f_fijo = abs( (soluciones(4,3) - soluciones(1,3)) / (soluciones(4,2) - soluciones(1,2)) );
 error_n12_g_fijo = abs( (soluciones(5,3)-soluciones(3,3)) / (soluciones(5,1) - soluciones(3,1)) );
-error_n12 = round(error_n12_g_fijo*200 + error_n12_f_fijo*10) % Calcula el error absoluto
+error_absoluto_n12 = round(error_n12_g_fijo*200 + error_n12_f_fijo*10)
 
 error_n23_f_fijo = abs( (soluciones(4,4) - soluciones(1,4)) / (soluciones(4,2) - soluciones(1,2)) );
 error_n23_g_fijo = abs( (soluciones(5,4)-soluciones(3,4)) / (soluciones(5,1) - soluciones(3,1)) );
-error_n23 = round(error_n23_g_fijo*200 + error_n23_f_fijo*10) % Calcula el error absoluto
+error_absoluto_n23 = round(error_n23_g_fijo*200 + error_n23_f_fijo*10)
 
 error_n13_f_fijo = abs( (soluciones(4,5) - soluciones(1,5)) / (soluciones(4,2) - soluciones(1,2)) );
 error_n13_g_fijo = abs( (soluciones(5,5)-soluciones(3,5)) / (soluciones(5,1) - soluciones(3,1)) );
-error_n13 = round(error_n13_g_fijo*200 + error_n13_f_fijo*10) % Calcula el error absoluto
+error_absoluto_n13 = round(error_n13_g_fijo*200 + error_n13_f_fijo*10)
 
-% Exporta datos a un archivo .csv para poder armar la tabla
 csvwrite ("punto_e_tabla.csv",soluciones);

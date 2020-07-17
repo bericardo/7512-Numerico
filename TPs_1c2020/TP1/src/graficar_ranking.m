@@ -1,11 +1,8 @@
-%%Este codigo realiza un grafico nivel hidrometrico-dia de los 5 meses  en los
-%cuales el Rio Parana tuvo las mayores bajantes/los menores niveles hidrometri-
-%cos.
 clear all
 close all
 1;
 
-% Cargamos los datos
+% Carga los datos
 dato = load("datos_ranking.csv");
 fechas = [1:31];
 
@@ -35,5 +32,5 @@ text(31,3.1,"1.47");
 text(31,5,"1.54");
 text(31,2.6,"1.6");
 
-% Exportamos el grafico
+% Exporta el grafico
 print -djpg "ranking_bajantes_1975-2020"

@@ -39,7 +39,6 @@ endfunction
 t_soluciones = [];
 t_soluciones = biseccion_c(0,1,5,t_soluciones);
 
-%Muestra tabla con resultados
 disp('-------------------------------------------------------');
 disp('     iter  |    a    |   b     |    m     |    E')
 disp('-------------------------------------------------------');

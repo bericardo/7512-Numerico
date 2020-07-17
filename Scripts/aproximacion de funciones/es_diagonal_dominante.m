@@ -17,7 +17,6 @@ function resultado = es_diagonal_dominante(A)
       diagonal_es_dominante = false;
       break;
     endif
-    
   endfor
   resultado = diagonal_es_dominante;
 endfunction

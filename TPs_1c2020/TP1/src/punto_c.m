@@ -1,6 +1,5 @@
 main;
 
-% Punto c del ejercicio
 matrizPromediosMensuales = minimos_mensuales(datos);
 
 % El mes es Septiembre del año 1969 y el valor del promedio es -0.05

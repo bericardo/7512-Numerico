@@ -1,6 +1,5 @@
 clear all; close all; 1;
 
-% Convierte los grados 53 y 37 a radianes
 ALPHA = (53*pi)/180;
 BETA = (37*pi)/180;
 
