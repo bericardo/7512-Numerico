@@ -39,4 +39,4 @@ for i=2:nro_iteraciones
   tabla(i,:) = [(i-1) x u f_diff(x,u)];
 endfor
 
-tabla
+disp(tabla);

@@ -1,3 +1,4 @@
+function res = trapecio(f,lim_inf,lim_sup,h)
 % Calcula aproximacion de una integral utilizando el metodo del trapecio
 %
 % datos es la tabla que tiene 2 filas y n columnas con los datos. Donde la primera 
@@ -7,7 +8,6 @@
 % h es el paso de discretizacion
 %
 % Devuelve la aproximacion calculada
-function res = trapecio(f,lim_inf,lim_sup,h)
   datos = crear_tabla(@f,lim_inf,lim_sup,h);
   dimension = columns(datos);
   
