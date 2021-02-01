@@ -2,7 +2,6 @@ clear all;
 close all;
 1;
 
-% Funcion que se quiere integrar
 function res = f(x)
   res = (pi/2).*(e.^(2-(0.5.*sin(x))));
 endfunction
