@@ -1,9 +1,15 @@
 function tabla_soluciones = punto_fijo_tol(g,semilla,tolerancia)
+  # g funcion x = g(x)
+  # semilla valor de arranque
+  # tolerancia valor de la tolerancia con la que se quiere el resultado
+  #
   # Devuelve tabla con columnas iteracion,x,f(x),error absoluto,error relativo,orden de convergencia
   x_ant = semilla;
   x_sig = g(semilla);
+  
   error_abs = abs(x_sig - x_ant);
   error_rel = error_abs/abs(x_sig);
+  
   sol = [];
   sol(1,:) = [0 x_ant x_sig error_abs error_rel 0]; 
   
@@ -14,6 +20,7 @@ function tabla_soluciones = punto_fijo_tol(g,semilla,tolerancia)
     
     error_abs = abs(x_sig - x_ant);
     error_rel = error_abs/abs(x_sig);
+    
     sol(n,:) = [n-1 x_ant x_sig error_abs error_rel 0];
     
     if n >= 3
