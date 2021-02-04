@@ -11,9 +11,7 @@ function res = secante(f,a,b,tolerancia)
     if (i > 1)
       err_abs = abs(x - tabla_solucion(i-1,3));
     endif
-    
     tabla_solucion(i,:) = [i a b err_abs 0];
-    
     if (i-1 >= 2)
       nominador = log(tabla_solucion(i,4))-log(tabla_solucion(i-1,4));
       denominador = log(tabla_solucion(i-1,4)) - log(tabla_solucion(i-2,4));

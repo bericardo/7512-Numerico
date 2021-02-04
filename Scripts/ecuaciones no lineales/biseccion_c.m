@@ -2,7 +2,6 @@ function tabla_soluciones = biseccion_c(f,a,b,cant_iter,sol,nro_iter=0)
   m = (a+b)/2;
   error_abs = abs((b-a)/2);
   sol(nro_iter+1,:) = [nro_iter a b m error_abs];
-  
   if (cant_iter ~= nro_iter)
     if (f(a)*f(m) < 0)
       sol = biseccion_c(@f,a,m,cant_iter,sol,nro_iter+1);
