@@ -1,9 +1,4 @@
 function tabla_soluciones = punto_fijo_iter(g,semilla,nro_iter)
-  # g funcion x = g(x)
-  # semilla valor de arranque
-  # nro_iter numero de iteraciones que se quiere realizar
-  #
-  # Devuelve tabla con columnas iteracion,x,f(x),error absoluto,error relativo,orden de convergencia
   x_ant = semilla;
   x_sig = g(semilla);
   

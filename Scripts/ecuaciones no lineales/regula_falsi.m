@@ -1,11 +1,4 @@
 function resultado = regula_falsi(f,a,b,solucion,iter)
-  # f funcion f
-  # a,b es el intervalo [a,b]
-  # solucion matriz vacia en la que se guarda la solucion
-  # iter numero de iteraciones que se quiere realizar
-  #
-  # Devuleve tabla cuyas columnas representan numero de iteracion, a, b, f(a),f(b)
-  # c, f(c), error absoluto
   fa = f(a);
   fb = f(b);
   c = b-(fb.*((b-a)./(fb-fa)));
