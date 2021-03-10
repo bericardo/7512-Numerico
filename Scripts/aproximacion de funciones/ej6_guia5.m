@@ -1,4 +1,3 @@
-close all;
 clear all;
 1;
 
@@ -21,9 +20,9 @@ d = y;
 W = [w0' w1' w2' d'];
 
 disp('Valores m y b del polinomio de grado 1 y = mx + b:')
-v = resolver(Q);
+v = resolver_matriz(Q);
 printf('m=%d\nb=%d\n',v(1),v(2));
 disp('');
 disp('Valores a,b y c del polinomio de grado 2 y = ax² + bx + c:')
-u = resolver(W);
+u = resolver_matriz(W);
 printf('a=%d\nb=%d\nc=%d\n',u(1),u(2),u(3));
